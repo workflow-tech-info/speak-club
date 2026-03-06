@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next";
 
 const RETELL_API_KEY = process.env.RETELL_API_KEY;
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest, 
+  context: { params: Promise<{ id: string }> }
+) {
   if (!RETELL_API_KEY) {
     return NextResponse.json({ error: "Missing RETELL_API_KEY" }, { status: 500 });
   }
 
-  const agentId = params.id;
+  const { id: agentId } = await context.params;
 
   try {
     const body = await req.json();
