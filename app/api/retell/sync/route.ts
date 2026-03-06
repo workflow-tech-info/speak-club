@@ -1,4 +1,4 @@
-import { NextResponse } from "next";
+import { NextResponse } from "next/server";
 
 const RETELL_API_KEY = process.env.RETELL_API_KEY;
 
