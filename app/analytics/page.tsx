@@ -45,7 +45,7 @@ export default function AnalyticsPage() {
       />
 
       {/* ── Top Stat Cards ────────────────────────────── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <StatCard label="Total Calls" value={analyticsStats.totalCalls} icon={PhoneCall} subtext="last 30 days" delay={0} />
         <StatCard label="Total Minutes" value={analyticsStats.totalMinutes} icon={Clock} subtext="last 30 days" delay={40} />
         <StatCard label="Avg Duration" value={analyticsStats.avgDuration} icon={Timer} subtext="per call" delay={80} />

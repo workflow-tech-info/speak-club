@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Search, Sun, Moon } from "lucide-react";
+import { Search, Sun, Moon, Menu } from "lucide-react";
 import { useState } from "react";
 
 const pageTitles: Record<string, string> = {
@@ -22,7 +22,7 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-30 flex items-center justify-between h-[64px] px-8 border-b backdrop-blur-xl"
+      className="sticky top-0 z-30 flex items-center justify-between h-[64px] px-4 md:px-8 border-b backdrop-blur-xl"
       style={{
         background: "var(--color-header)",
         borderColor: "var(--color-card-border)",
@@ -30,6 +30,12 @@ export function Header() {
     >
       {/* Left: Breadcrumbs */}
       <div className="flex items-center gap-2 text-sm">
+        <button 
+          className="md:hidden p-1.5 -ml-1.5 mr-1 text-zinc-500 hover:bg-zinc-100 rounded-lg transition-colors"
+          onClick={() => document.dispatchEvent(new CustomEvent('toggleMobileMenu'))}
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         {currentPage && (
           <span className="text-zinc-700 font-medium">{currentPage}</span>
         )}

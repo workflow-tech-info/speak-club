@@ -13,8 +13,9 @@ import {
   Phone,
   Settings,
   ChevronLeft,
+  X
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navSections = [
   {
@@ -45,35 +46,58 @@ const navSections = [
 export function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleToggle = () => setMobileOpen((prev) => !prev);
+    document.addEventListener("toggleMobileMenu", handleToggle);
+    return () => document.removeEventListener("toggleMobileMenu", handleToggle);
+  }, []);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
-    <aside
-      className={cn(
-        "fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 ease-in-out",
-        collapsed ? "w-[72px]" : "w-60"
-      )}
-      style={{ background: "var(--color-sidebar)" }}
-    >
-      {/* Logo */}
-      <div className="flex items-center justify-between h-[64px] px-4 border-b" style={{ borderColor: "var(--color-sidebar-border)" }}>
-        <Link href="/" className="flex items-center gap-2.5 min-w-0">
-          <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center">
-            <Bot className="h-4.5 w-4.5 text-white" strokeWidth={2} />
+    <>
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 ease-in-out",
+          collapsed ? "w-[72px]" : "w-60",
+          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        )}
+        style={{ background: "var(--color-sidebar)" }}
+      >
+        {/* Logo */}
+        <div className="flex items-center justify-between h-[64px] px-4 border-b" style={{ borderColor: "var(--color-sidebar-border)" }}>
+          <Link href="/" className="flex items-center gap-2.5 min-w-0">
+            <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center">
+              <Bot className="h-4.5 w-4.5 text-white" strokeWidth={2} />
+            </div>
+            {!collapsed && (
+              <span className="text-[15px] font-semibold text-white truncate tracking-tight">
+                Speak Club
+              </span>
+            )}
+          </Link>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setCollapsed(!collapsed)}
+              className="hidden md:flex flex-shrink-0 h-7 w-7 rounded-md items-center justify-center hover:bg-white/10 transition-colors"
+              style={{ color: "var(--color-sidebar-text)" }}
+            >
+              <ChevronLeft className={cn("h-4 w-4 transition-transform duration-300", collapsed && "rotate-180")} />
+            </button>
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="md:hidden flex-shrink-0 h-7 w-7 rounded-md flex items-center justify-center hover:bg-white/10 transition-colors"
+              style={{ color: "var(--color-sidebar-text)" }}
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
-          {!collapsed && (
-            <span className="text-[15px] font-semibold text-white truncate tracking-tight">
-              Speak Club
-            </span>
-          )}
-        </Link>
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="flex-shrink-0 h-7 w-7 rounded-md flex items-center justify-center hover:bg-white/10 transition-colors"
-          style={{ color: "var(--color-sidebar-text)" }}
-        >
-          <ChevronLeft className={cn("h-4 w-4 transition-transform duration-300", collapsed && "rotate-180")} />
-        </button>
-      </div>
+        </div>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto sidebar-nav px-3 py-4 space-y-6">
@@ -133,5 +157,6 @@ export function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }
