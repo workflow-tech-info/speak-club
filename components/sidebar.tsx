@@ -175,7 +175,7 @@ export function Sidebar() {
             </div>
           )}
         </div>
-        <Link
+        <a
           href="/api/logout"
           className={cn(
             "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150 hover:bg-white/[0.06] w-full",
@@ -186,7 +186,7 @@ export function Sidebar() {
         >
           <LogOut className="h-[18px] w-[18px] flex-shrink-0 opacity-70" strokeWidth={1.7} />
           {!collapsed && <span>Log out</span>}
-        </Link>
+        </a>
       </div>
     </aside>
     </>

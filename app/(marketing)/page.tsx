@@ -50,16 +50,27 @@ export default function HomePage() {
             Voice AI Infrastructure
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-6" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-            <span style={{ color: "#e6e6e6" }}>The Operating System</span>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-8" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            <span style={{ color: "#e6e6e6" }}>Your Business,</span>
             <br />
-            <span style={{ color: "#00ff9c" }}>For Voice AI Companies</span>
+            <span style={{ color: "#00ff9c" }}>On Call.</span>
           </h1>
 
-          <p className="max-w-2xl mx-auto text-[16px] sm:text-[18px] leading-relaxed mb-10" style={{ color: "#888" }}>
-            Speak-Club transforms phone numbers into intelligent AI workforces.
-            Customer support, sales calls, analytics queries, and developer operations — all handled through one conversational interface.
-          </p>
+          <div className="space-y-2 mb-10">
+            <p className="text-xl sm:text-2xl font-bold text-white tracking-wide">Customers get help.</p>
+            <p className="text-xl sm:text-2xl font-bold text-white tracking-wide">Leads get qualified.</p>
+            <p className="text-xl sm:text-2xl font-bold text-white tracking-wide">Teams get answers.</p>
+            <p className="text-2xl sm:text-3xl font-black text-[#00ff9c] mt-4 tracking-widest">JUST ASK.</p>
+          </div>
+
+          <div className="max-w-2xl mx-auto space-y-4 mb-12">
+            <p className="text-[16px] sm:text-[18px] leading-relaxed text-zinc-400 font-medium">
+              Your most powerful companion for running modern companies.
+            </p>
+            <p className="text-[16px] sm:text-[18px] leading-relaxed text-zinc-500">
+              One number that connects customers, teams, and data into a single conversation.
+            </p>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
