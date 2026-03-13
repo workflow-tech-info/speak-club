@@ -13,7 +13,13 @@ import {
   Phone,
   Settings,
   ChevronLeft,
-  X
+  X,
+  Send,
+  Mic,
+  GitBranch,
+  Code2,
+  LogOut,
+  Zap,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -26,18 +32,32 @@ const navSections = [
     ],
   },
   {
-    label: "MANAGEMENT",
+    label: "CALLING",
     items: [
-      { name: "Clients", href: "/clients", icon: Users },
+      { name: "Outbound Calls", href: "/outbound", icon: Send },
       { name: "Call Logs", href: "/call-logs", icon: PhoneCall },
       { name: "QA Review", href: "/qa-review", icon: ClipboardCheck },
     ],
   },
   {
-    label: "SYSTEM",
+    label: "AGENTS & VOICES",
     items: [
       { name: "Agents", href: "/agents", icon: Bot },
+      { name: "Squads", href: "/squads", icon: GitBranch },
+      { name: "Voice Library", href: "/voices", icon: Mic },
       { name: "Phone Numbers", href: "/phone-numbers", icon: Phone },
+    ],
+  },
+  {
+    label: "MANAGEMENT",
+    items: [
+      { name: "Clients", href: "/clients", icon: Users },
+    ],
+  },
+  {
+    label: "DEVELOPER",
+    items: [
+      { name: "Developers", href: "/developers", icon: Code2 },
       { name: "Settings", href: "/settings", icon: Settings },
     ],
   },
@@ -143,18 +163,30 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="px-3 py-3 border-t" style={{ borderColor: "var(--color-sidebar-border)" }}>
+      <div className="px-3 py-3 border-t space-y-1" style={{ borderColor: "var(--color-sidebar-border)" }}>
         <div className={cn("flex items-center gap-2.5 px-2 py-1.5", collapsed && "justify-center px-0")}>
           <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-bold text-white">U</span>
+            <span className="text-xs font-bold text-white">A</span>
           </div>
           {!collapsed && (
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-[13px] font-medium text-white/90 truncate">Admin User</p>
               <p className="text-[11px] truncate" style={{ color: "var(--color-sidebar-text)" }}>admin@agency.io</p>
             </div>
           )}
         </div>
+        <Link
+          href="/login"
+          className={cn(
+            "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150 hover:bg-white/[0.06] w-full",
+            collapsed && "justify-center px-0"
+          )}
+          style={{ color: "var(--color-sidebar-text)" }}
+          title={collapsed ? "Log out" : undefined}
+        >
+          <LogOut className="h-[18px] w-[18px] flex-shrink-0 opacity-70" strokeWidth={1.7} />
+          {!collapsed && <span>Log out</span>}
+        </Link>
       </div>
     </aside>
     </>

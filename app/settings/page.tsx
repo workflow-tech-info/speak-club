@@ -57,7 +57,7 @@ export default function SettingsPage() {
               <div className="relative">
                 <input
                   type={showApiKey ? "text" : "password"}
-                  defaultValue="key_d4a3996581faf40ccd2a965ca54c"
+                  defaultValue="YOUR_RETELL_API_KEY"
                   className="w-full px-4 py-2.5 text-[13px] border border-zinc-200 rounded-xl bg-zinc-50 focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 outline-none transition-all font-mono pr-12"
                 />
                 <button
@@ -95,7 +95,7 @@ export default function SettingsPage() {
               <div className="relative">
                 <input
                   type="password"
-                  defaultValue="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  defaultValue="your_n8n_api_key_here"
                   className="w-full px-4 py-2.5 text-[13px] border border-zinc-200 rounded-xl bg-zinc-50 focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-100 outline-none transition-all font-mono pr-12"
                 />
                 <button className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 transition-colors">

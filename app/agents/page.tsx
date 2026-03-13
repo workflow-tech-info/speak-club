@@ -5,6 +5,7 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { agents } from "@/lib/mock-data";
 import { Bot, PhoneCall, Mic, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function AgentsPage() {
   return (
@@ -22,9 +23,10 @@ export default function AgentsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {agents.map((agent, i) => (
-          <div
+          <Link
             key={agent.id}
-            className="animate-fade-in-up rounded-2xl bg-white border border-[var(--color-card-border)] p-5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 cursor-pointer"
+            href={`/agents/${agent.id}`}
+            className="animate-fade-in-up rounded-2xl bg-white border border-[var(--color-card-border)] p-5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-300 cursor-pointer block"
             style={{ animationDelay: `${i * 40}ms` }}
           >
             {/* Header */}
@@ -74,7 +76,7 @@ export default function AgentsPage() {
                 <span className="text-zinc-600 font-medium">{agent.clientName}</span> · {agent.language}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </>
