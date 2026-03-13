@@ -31,69 +31,53 @@ const LANGUAGES = [
   { flag: "🇩🇪", name: "German" },
 ];
 
+import { MatrixRain } from "@/components/matrix-rain";
+
 export default function HomePage() {
   return (
     <>
       {/* ━━━ HERO ━━━ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        {/* Grid background */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: "linear-gradient(rgba(0,255,156,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,156,0.3) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }} />
-        {/* Glow orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px]" style={{ background: "rgba(0,255,156,0.04)" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[100px]" style={{ background: "rgba(0,217,255,0.03)" }} />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <MatrixRain />
+        
+        {/* Gradients to fade Matrix rain and content */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-10" />
 
-        <div className="relative max-w-5xl mx-auto px-4 text-center">
-          <div className="inline-block px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wider uppercase mb-8" style={{ background: "rgba(0,255,156,0.08)", color: "#00ff9c", border: "1px solid rgba(0,255,156,0.15)" }}>
-            Voice AI Infrastructure
+        <div className="relative max-w-5xl mx-auto px-4 text-center z-20">
+          <div className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.3em] uppercase mb-12 animate-fade-in shadow-[0_0_20px_rgba(0,255,156,0.15)]" style={{ background: "rgba(0,255,156,0.1)", color: "#00ff9c", border: "1px solid rgba(0,255,156,0.2)" }}>
+            NEURAL_BUSINESS_UPLINK
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-8" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-            <span style={{ color: "#e6e6e6" }}>Your Business,</span>
+          <h1 className="text-6xl sm:text-7xl md:text-9xl font-black leading-[0.95] tracking-tighter mb-12 drop-shadow-[0_0_30px_rgba(0,255,156,0.3)]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            <span style={{ color: "#ffffff" }}>YOUR BUSINESS,</span>
             <br />
-            <span style={{ color: "#00ff9c" }}>On Call.</span>
+            <span style={{ color: "#00ff9c" }}>ON CALL.</span>
           </h1>
 
-          <div className="space-y-2 mb-10">
-            <p className="text-xl sm:text-2xl font-bold text-white tracking-wide">Customers get help.</p>
-            <p className="text-xl sm:text-2xl font-bold text-white tracking-wide">Leads get qualified.</p>
-            <p className="text-xl sm:text-2xl font-bold text-white tracking-wide">Teams get answers.</p>
-            <p className="text-2xl sm:text-3xl font-black text-[#00ff9c] mt-4 tracking-widest">JUST ASK.</p>
+          <div className="space-y-4 mb-16">
+            <p className="text-xl sm:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Customers get help.</p>
+            <p className="text-xl sm:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Leads get qualified.</p>
+            <p className="text-xl sm:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Teams get answers.</p>
+            <div className="h-px w-24 mx-auto bg-[#00ff9c]/30 my-8" />
+            <p className="text-3xl sm:text-5xl font-black text-[#00ff9c] tracking-[0.5em] uppercase font-mono animate-pulse">JUST ASK.</p>
           </div>
 
-          <div className="max-w-2xl mx-auto space-y-4 mb-12">
-            <p className="text-[16px] sm:text-[18px] leading-relaxed text-zinc-400 font-medium">
-              Your most powerful companion for running modern companies.
-            </p>
-            <p className="text-[16px] sm:text-[18px] leading-relaxed text-zinc-500">
-              One number that connects customers, teams, and data into a single conversation.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Link
               href="/login"
-              className="px-8 py-3.5 text-[14px] font-bold rounded-xl transition-all"
-              style={{ background: "#00ff9c", color: "#0a0a0a", boxShadow: "0 0 40px rgba(0,255,156,0.2)" }}
+              className="px-10 py-4 text-[14px] font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(0,255,156,0.3)]"
+              style={{ background: "#00ff9c", color: "#0a0a0a" }}
             >
-              Start Building
+              INITIALIZE_SESSION
             </Link>
             <Link
               href="/architecture"
-              className="px-8 py-3.5 text-[14px] font-bold rounded-xl transition-all"
-              style={{ color: "#00ff9c", border: "1px solid rgba(0,255,156,0.2)", background: "rgba(0,255,156,0.03)" }}
+              className="px-10 py-4 text-[14px] font-bold rounded-xl transition-all hover:bg-[#00ff9c]/10 border border-[#00ff9c]/30"
+              style={{ color: "#00ff9c", background: "rgba(0,255,156,0.02)" }}
             >
-              View Architecture
+              UPLINK_PROTOCOL
             </Link>
-          </div>
-
-          {/* Matrix rain hint */}
-          <div className="mt-16 flex justify-center gap-3 opacity-30">
-            {[...Array(7)].map((_, i) => (
-              <div key={i} className="w-px bg-gradient-to-b from-transparent via-[#00ff9c] to-transparent" style={{ height: `${40 + i * 12}px`, animationDelay: `${i * 0.2}s` }} />
-            ))}
           </div>
         </div>
       </section>
