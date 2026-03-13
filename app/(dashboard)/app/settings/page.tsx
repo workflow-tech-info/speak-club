@@ -15,7 +15,7 @@ export default function SettingsPage() {
         subtitle="Manage your organization protocols and authentication nodes"
       />
 
-      <div className="max-w-2xl space-y-6 pb-20">
+      <div className="max-w-2xl px-4 sm:px-0 space-y-6 pb-20">
         {/* Organization */}
         <GlassCard>
           <div className="px-6 py-5 border-b border-[#00ff9c]/10 bg-white/[0.01]">

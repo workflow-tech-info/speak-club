@@ -49,18 +49,18 @@ export default function HomePage() {
             NEURAL_BUSINESS_UPLINK
           </div>
 
-          <h1 className="text-6xl sm:text-7xl md:text-9xl font-black leading-[0.95] tracking-tighter mb-12 drop-shadow-[0_0_30px_rgba(0,255,156,0.3)]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+          <h1 className="text-4xl sm:text-7xl md:text-9xl font-black leading-[0.95] tracking-tighter mb-8 md:mb-12 drop-shadow-[0_0_30px_rgba(0,255,156,0.3)]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
             <span style={{ color: "#ffffff" }}>YOUR BUSINESS,</span>
             <br />
             <span style={{ color: "#00ff9c" }}>ON CALL.</span>
           </h1>
 
-          <div className="space-y-4 mb-16">
-            <p className="text-xl sm:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Customers get help.</p>
-            <p className="text-xl sm:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Leads get qualified.</p>
-            <p className="text-xl sm:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Teams get answers.</p>
-            <div className="h-px w-24 mx-auto bg-[#00ff9c]/30 my-8" />
-            <p className="text-3xl sm:text-5xl font-black text-[#00ff9c] tracking-[0.5em] uppercase font-mono animate-pulse">JUST ASK.</p>
+          <div className="space-y-3 md:space-y-4 mb-12 md:mb-16">
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Customers get help.</p>
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Leads get qualified.</p>
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-white/90 tracking-wide uppercase font-mono">Teams get answers.</p>
+            <div className="h-px w-16 md:w-24 mx-auto bg-[#00ff9c]/30 my-6 md:my-8" />
+            <p className="text-2xl sm:text-4xl md:text-5xl font-black text-[#00ff9c] tracking-[0.3em] md:tracking-[0.5em] uppercase font-mono animate-pulse">JUST ASK.</p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">

@@ -84,34 +84,34 @@ export function AgentForm({ initialData, isEditing = false }: AgentFormProps) {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto pb-20">
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-0 pb-20">
       {/* ── Sticky Header ───────────────────────────── */}
-      <div className="sticky top-0 z-40 bg-black/60 backdrop-blur-xl border-b border-[#00ff9c]/10 pb-6 pt-8 mb-8 flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500">
-        <div className="flex items-center gap-6">
-          <Link href="/agents" className="p-2.5 -ml-2 rounded-xl hover:bg-white/5 text-zinc-500 hover:text-[#00ff9c] transition-all border border-transparent hover:border-[#00ff9c]/10">
+      <div className="sticky top-0 z-40 bg-black/60 backdrop-blur-xl border-b border-[#00ff9c]/10 pb-4 sm:pb-6 pt-6 sm:pt-8 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+        <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
+          <Link href="/agents" className="p-2 sm:p-2.5 -ml-2 rounded-xl hover:bg-white/5 text-zinc-500 hover:text-[#00ff9c] transition-all border border-transparent hover:border-[#00ff9c]/10">
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <div>
-            <h1 className="text-[24px] font-bold tracking-widest text-white font-mono uppercase">
-              {isEditing ? "EDIT_AGENT_PROTOCOL" : "INIT_NEW_AGENT"}
+          <div className="min-w-0">
+            <h1 className="text-[18px] sm:text-[24px] font-bold tracking-widest text-white font-mono uppercase truncate">
+              {isEditing ? "EDIT_AGENT" : "NEW_AGENT"}
             </h1>
-            <p className="mt-1 text-[11px] text-zinc-600 font-mono uppercase tracking-tighter">
-              {isEditing ? `MGMT_NODE: ${initialData?.agent_name}` : "CONFIG_VOICE_NEURAL_UPLINK_TOOLS"}
+            <p className="mt-1 text-[10px] sm:text-[11px] text-zinc-600 font-mono uppercase tracking-tighter truncate">
+              {isEditing ? `MGMT_NODE: ${initialData?.agent_name}` : "CONFIG_NEURAL_UPLINK"}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="inline-flex items-center gap-2 px-6 py-3 text-[11px] font-bold text-zinc-400 bg-white/5 border border-white/10 hover:border-[#00ff9c]/30 hover:text-white rounded-xl transition-all font-mono uppercase tracking-widest">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button className="hidden sm:inline-flex items-center gap-2 px-6 py-3 text-[11px] font-bold text-zinc-400 bg-white/5 border border-white/10 hover:border-[#00ff9c]/30 hover:text-white rounded-xl transition-all font-mono uppercase tracking-widest">
             <Play className="h-4 w-4" />
-            INITIALIZE_TEST
+            TEST
           </button>
           <button 
             onClick={form.handleSubmit(onSubmit)}
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 px-8 py-3 text-[11px] font-bold text-black bg-[#00ff9c] hover:bg-[#00e68d] rounded-xl transition-all shadow-[0_0_20px_rgba(0,255,156,0.1)] disabled:opacity-50 font-mono uppercase tracking-widest"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-8 py-3 text-[11px] font-bold text-black bg-[#00ff9c] hover:bg-[#00e68d] rounded-xl transition-all shadow-[0_0_20px_rgba(0,255,156,0.1)] disabled:opacity-50 font-mono uppercase tracking-widest"
           >
             <Save className="h-4 w-4" />
-            {isSubmitting ? "COMMIT_PENDING..." : "PROTOCOL_COMMIT"}
+            {isSubmitting ? "COMMITTING..." : "COMMIT_PROTOCOL"}
           </button>
         </div>
       </div>
@@ -123,7 +123,7 @@ export function AgentForm({ initialData, isEditing = false }: AgentFormProps) {
             <h2 className="text-[12px] font-bold text-[#00ff9c] mb-6 font-mono uppercase tracking-[0.2em]">CORE_CONFIGURATION</h2>
             
             <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">AGENT_IDENTIFIER</label>
                   <input

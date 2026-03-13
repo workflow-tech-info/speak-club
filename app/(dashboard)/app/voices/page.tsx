@@ -39,22 +39,24 @@ export default function VoicesPage() {
       />
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3 mb-6">
-        <div className="relative flex-1 min-w-[200px] max-w-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
+        <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
           <input
             type="text"
             placeholder="SEARCH_VOICES..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-[13px] border border-[#00ff9c]/20 rounded-xl bg-black text-white focus:border-[#00ff9c] focus:ring-1 focus:ring-[#00ff9c]/20 outline-none transition-all font-mono placeholder:text-zinc-700"
+            className="w-full pl-10 pr-4 py-2.5 text-[13px] border border-[#00ff9c]/20 rounded-xl bg-black text-white focus:border-[#00ff9c] outline-none transition-all font-mono placeholder:text-zinc-800"
           />
         </div>
-        {["All", "Default", "Cloned", "Community"].map(f => (
-          <button key={f} className="px-3 py-2 text-[11px] font-bold text-zinc-500 bg-white/[0.02] border border-white/5 rounded-xl hover:border-[#00ff9c]/30 hover:text-[#00ff9c] transition-all font-mono uppercase tracking-widest">
-            {f}
-          </button>
-        ))}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
+          {["All", "Default", "Cloned", "Community"].map(f => (
+            <button key={f} className="shrink-0 px-4 py-2 text-[11px] font-bold text-zinc-500 bg-white/[0.02] border border-white/5 rounded-xl hover:border-[#00ff9c]/30 hover:text-[#00ff9c] transition-all font-mono uppercase tracking-widest">
+              {f}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

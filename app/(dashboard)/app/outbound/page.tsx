@@ -125,22 +125,22 @@ export default function OutboundPage() {
             </div>
 
             {scheduled && (
-              <div className="grid grid-cols-2 gap-4 animate-fade-in-up duration-300">
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2 font-mono">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fade-in-up duration-300">
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest font-mono">
                     <Calendar className="inline h-3.5 w-3.5 mr-1.5 text-[#00ff9c]" />
                     EST_START
                   </label>
                   <input
                     type="datetime-local"
-                    className="w-full px-4 py-3 text-[13px] border border-[#00ff9c]/20 rounded-xl bg-black text-white focus:border-[#00ff9c] outline-none transition-all font-mono sm-invert-calendar"
+                    className="w-full px-4 py-3 text-[12px] border border-[#00ff9c]/20 rounded-xl bg-black text-white focus:border-[#00ff9c] outline-none transition-all font-mono"
                   />
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2 font-mono">LIMIT_END</label>
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-zinc-500 uppercase tracking-widest font-mono">LIMIT_END</label>
                   <input
                     type="datetime-local"
-                    className="w-full px-4 py-3 text-[13px] border border-[#00ff9c]/20 rounded-xl bg-black text-white focus:border-[#00ff9c] outline-none transition-all font-mono"
+                    className="w-full px-4 py-3 text-[12px] border border-[#00ff9c]/20 rounded-xl bg-black text-white focus:border-[#00ff9c] outline-none transition-all font-mono"
                   />
                 </div>
               </div>

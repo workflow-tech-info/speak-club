@@ -89,7 +89,7 @@ export default function PhoneNumbersPage() {
                   <td className="px-4 py-4">
                     <button 
                       onClick={() => handleDeleteNumber(pn.id)}
-                      className="p-2 rounded-lg text-zinc-700 hover:text-red-500 hover:bg-red-500/5 transition-all opacity-0 group-hover:opacity-100"
+                      className="p-2 rounded-lg text-zinc-700 hover:text-red-500 hover:bg-red-500/5 transition-all md:opacity-0 md:group-hover:opacity-100"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

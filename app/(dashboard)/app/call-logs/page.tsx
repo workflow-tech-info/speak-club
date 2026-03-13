@@ -38,18 +38,18 @@ export default function CallLogsPage() {
       />
 
       <GlassCard>
-        <div className="px-6 py-5 border-b border-[var(--color-card-border)] flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center justify-between w-full md:w-auto gap-4">
+        <div className="px-4 sm:px-6 py-5 border-b border-[var(--color-card-border)] flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-center justify-between w-full lg:w-auto gap-4">
             <div>
               <h2 className="text-sm font-bold tracking-widest text-[#00ff9c] uppercase font-mono">Recent Call Stream</h2>
               <p className="text-[11px] text-zinc-500 mt-1 font-mono">{filteredLogs.length} RECORDS_FOUND</p>
             </div>
-            <button className="flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold text-[#00ff9c] bg-[#00ff9c]/5 border border-[#00ff9c]/20 rounded-lg hover:bg-[#00ff9c]/10 transition-all uppercase tracking-widest">
+            <button className="flex shrink-0 items-center gap-2 px-3 py-1.5 text-[11px] font-bold text-[#00ff9c] bg-[#00ff9c]/5 border border-[#00ff9c]/20 rounded-lg hover:bg-[#00ff9c]/10 transition-all uppercase tracking-widest">
               <Download className="h-3.5 w-3.5" />
-              EXPORT_CSV
+              EXPORT
             </button>
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
             <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
               <input 
@@ -57,30 +57,32 @@ export default function CallLogsPage() {
                 placeholder="SEARCH_CALLS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 text-[11px] font-bold text-white bg-black/40 border border-white/5 rounded-lg outline-none focus:border-[#00ff9c]/30 transition-all placeholder:text-zinc-600 font-mono uppercase tracking-tight"
+                className="w-full pl-9 pr-3 py-2 text-[11px] font-bold text-white bg-black/40 border border-white/5 rounded-lg outline-none focus:border-[#00ff9c]/30 transition-all placeholder:text-zinc-600 font-mono uppercase tracking-tight"
               />
             </div>
-            <select 
-              value={agentFilter}
-              onChange={(e) => setAgentFilter(e.target.value)}
-              className="w-full sm:w-auto px-3 py-1.5 text-[11px] font-bold text-zinc-400 bg-black/40 border border-white/5 rounded-lg appearance-none cursor-pointer hover:border-[#00ff9c]/20 transition-all outline-none uppercase font-mono tracking-widest"
-            >
-              <option>ALL AGENTS</option>
-              {uniqueAgents.map(agent => (
-                <option key={agent} value={agent}>{agent.toUpperCase()}</option>
-              ))}
-            </select>
-            <select 
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full sm:w-auto px-3 py-1.5 text-[11px] font-bold text-zinc-400 bg-black/40 border border-white/5 rounded-lg appearance-none cursor-pointer hover:border-[#00ff9c]/20 transition-all outline-none uppercase font-mono tracking-widest"
-            >
-              <option>ALL STATUSES</option>
-              <option value="Completed">COMPLETED</option>
-              <option value="Missed">MISSED</option>
-              <option value="Failed">FAILED</option>
-              <option value="In-progress">IN_PROGRESS</option>
-            </select>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <select 
+                value={agentFilter}
+                onChange={(e) => setAgentFilter(e.target.value)}
+                className="flex-1 sm:w-auto px-3 py-2 text-[11px] font-bold text-zinc-400 bg-black/40 border border-white/5 rounded-lg appearance-none cursor-pointer hover:border-[#00ff9c]/20 transition-all outline-none uppercase font-mono tracking-widest"
+              >
+                <option>ALL AGENTS</option>
+                {uniqueAgents.map(agent => (
+                  <option key={agent} value={agent}>{agent.toUpperCase()}</option>
+                ))}
+              </select>
+              <select 
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="flex-1 sm:w-auto px-3 py-2 text-[11px] font-bold text-zinc-400 bg-black/40 border border-white/5 rounded-lg appearance-none cursor-pointer hover:border-[#00ff9c]/20 transition-all outline-none uppercase font-mono tracking-widest"
+              >
+                <option>ALL STATUSES</option>
+                <option value="Completed">COMPLETED</option>
+                <option value="Missed">MISSED</option>
+                <option value="Failed">FAILED</option>
+                <option value="In-progress">IN_PROGRESS</option>
+              </select>
+            </div>
           </div>
         </div>
         <div className="overflow-x-auto">

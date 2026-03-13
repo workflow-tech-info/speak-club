@@ -81,13 +81,24 @@ export function Sidebar() {
 
   return (
     <>
+      {/* Mobile Overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden transition-opacity duration-300"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 ease-in-out border-r shadow-2xl md:shadow-none",
           collapsed ? "w-[72px]" : "w-60",
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
-        style={{ background: "var(--color-sidebar)" }}
+        style={{ 
+          background: "var(--color-sidebar)",
+          borderColor: "var(--color-sidebar-border)"
+        }}
       >
         {/* Logo */}
         <div className="flex items-center justify-between h-[64px] px-4 border-b" style={{ borderColor: "var(--color-sidebar-border)" }}>

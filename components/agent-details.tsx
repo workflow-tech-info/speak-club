@@ -550,30 +550,30 @@ export function AgentDetails({ initialData }: AgentDetailsProps) {
   return (
     <div className="min-h-screen bg-transparent -m-8">
       {/* ── Top Header ───────────────────────────── */}
-      <div className="flex items-center justify-between px-6 py-4 bg-black/40 backdrop-blur-md border-b border-[#00ff9c]/10">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 py-4 bg-black/40 backdrop-blur-md border-b border-[#00ff9c]/10 gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto">
           <Link href="/agents" className="p-2 hover:bg-white/5 rounded-xl text-zinc-500 hover:text-[#00ff9c] transition-all">
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div className="flex items-center gap-3">
             <div className="h-2 w-2 rounded-full bg-[#00ff9c] animate-pulse" />
-            <h1 className="text-[14px] font-bold text-white font-mono uppercase tracking-widest">{initialData.agent_name}</h1>
+            <h1 className="text-[14px] font-bold text-white font-mono uppercase tracking-widest truncate">{initialData.agent_name}</h1>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 text-[9px] font-bold text-[#00ff9c] bg-[#00ff9c]/10 border border-[#00ff9c]/20 rounded-md uppercase tracking-widest font-mono">NODE_PUBLIC</span>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all font-mono uppercase tracking-tighter">
+        <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
+          <span className="shrink-0 px-2.5 py-1 text-[9px] font-bold text-[#00ff9c] bg-[#00ff9c]/10 border border-[#00ff9c]/20 rounded-md uppercase tracking-widest font-mono">NODE_PUBLIC</span>
+          <button className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all font-mono uppercase tracking-tighter">
             <Code2 className="h-3.5 w-3.5" />
             VARS
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all font-mono uppercase tracking-tighter">
+          <button className="hidden md:flex shrink-0 items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl transition-all font-mono uppercase tracking-tighter">
             <History className="h-3.5 w-3.5" />
             VERSIONS
           </button>
-          <button className="flex items-center gap-1.5 px-6 py-2 text-[11px] font-bold text-black bg-[#00ff9c] hover:bg-[#00e68d] rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,156,0.2)] font-mono uppercase tracking-widest">
-            PREVIEW_NODE
+          <button className="shrink-0 flex items-center justify-center gap-1.5 px-6 py-2 text-[11px] font-bold text-black bg-[#00ff9c] hover:bg-[#00e68d] rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,156,0.2)] font-mono uppercase tracking-widest">
+            PREVIEW
           </button>
-          <button className="p-2 text-zinc-600 hover:text-[#00ff9c] transition-all">
+          <button className="shrink-0 p-2 text-zinc-600 hover:text-[#00ff9c] transition-all">
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>
@@ -599,7 +599,7 @@ export function AgentDetails({ initialData }: AgentDetailsProps) {
       </div>
 
       {/* ── Content Area ─────────────────────────── */}
-      <div className="p-10 max-w-[1400px] mx-auto min-h-[calc(100vh-120px)]">
+      <div className="p-4 sm:p-10 max-w-[1400px] mx-auto min-h-[calc(100vh-120px)]">
         {renderContent()}
       </div>
     </div>

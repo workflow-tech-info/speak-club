@@ -33,7 +33,7 @@ export function CallDrawer({ call, isOpen, onClose }: CallDrawerProps) {
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ type: "spring", damping: 30, stiffness: 200 }}
-          className="relative w-full max-w-lg bg-[#050505] h-full shadow-[0_0_50px_rgba(0,0,0,0.5)] border-l border-white/5 flex flex-col z-50 overflow-hidden"
+          className="relative w-full sm:max-w-lg bg-[#050505] h-full shadow-[0_0_50px_rgba(0,0,0,0.5)] border-l border-white/5 flex flex-col z-50 overflow-hidden"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 bg-white/[0.01]">
