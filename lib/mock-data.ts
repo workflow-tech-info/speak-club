@@ -33,6 +33,7 @@ export interface CallLog {
   transferred: boolean;
   time: string;
   clientName: string;
+  transcript?: { role: "agent" | "user"; content: string; time: string }[];
 }
 
 export interface AnalyticsDataPoint {
@@ -103,11 +104,49 @@ export const agents: Agent[] = [
 ];
 
 export const callLogs: CallLog[] = [
-  { id: "c1", agentName: "Sophia", type: "phone", status: "completed", duration: "4:32", sentiment: "positive", bookingMade: true, transferred: false, time: "2 min ago", clientName: "Meridian Health" },
-  { id: "c2", agentName: "James", type: "phone", status: "completed", duration: "2:15", sentiment: "neutral", bookingMade: false, transferred: false, time: "8 min ago", clientName: "Apex Auto Sales" },
-  { id: "c3", agentName: "Ava", type: "web", status: "completed", duration: "6:48", sentiment: "positive", bookingMade: true, transferred: false, time: "14 min ago", clientName: "Luxe Property" },
+  { id: "c1", agentName: "Sophia", type: "phone", status: "completed", duration: "4:32", sentiment: "positive", bookingMade: true, transferred: false, time: "2 min ago", clientName: "Meridian Health", 
+    transcript: [
+      { role: "agent", content: "Hello, this is Sophia calling from Meridian Health. Am I speaking with John?", time: "0:02" },
+      { role: "user", content: "Yes, this is John.", time: "0:08" },
+      { role: "agent", content: "Great! I'm calling to follow up on your recent request to schedule a consultation. Do you have a few minutes?", time: "0:12" },
+      { role: "user", content: "Sure, I have a moment now.", time: "0:20" },
+      { role: "agent", content: "Perfect. I see you were interested in our comprehensive health package. Would mornings or afternoons work better for your initial visit?", time: "0:25" },
+      { role: "user", content: "Afternoons are usually better for me. Maybe around 2 PM?", time: "0:38" },
+      { role: "agent", content: "Let me check our schedule for 2 PM. It looks like we have an opening next Tuesday at 2:30 PM. Would that work?", time: "0:45" },
+      { role: "user", content: "Yes, next Tuesday at 2:30 sounds great.", time: "0:52" },
+      { role: "agent", content: "Wonderful, I've got you booked. You'll receive a confirmation email shortly. Is there anything else I can help with today?", time: "1:01" },
+      { role: "user", content: "No, that's it. Thanks!", time: "1:08" },
+      { role: "agent", content: "You're welcome, John. Have a great day!", time: "1:12" }
+    ]
+  },
+  { id: "c2", agentName: "James", type: "phone", status: "completed", duration: "2:15", sentiment: "neutral", bookingMade: false, transferred: false, time: "8 min ago", clientName: "Apex Auto Sales",
+    transcript: [
+      { role: "agent", content: "Hi, this is James from Apex Auto Sales. Is this Sarah?", time: "0:03" },
+      { role: "user", content: "Yes, speaking.", time: "0:07" },
+      { role: "agent", content: "I'm calling about the inquiry you made for the Tesla Model 3. Are you still interested?", time: "0:12" },
+      { role: "user", content: "Oh, I actually already found another car. Thanks though.", time: "0:25" },
+      { role: "agent", content: "No problem at all! Thanks for letting me know. Have a great day.", time: "0:32" }
+    ]
+  },
+  { id: "c3", agentName: "Ava", type: "web", status: "completed", duration: "6:48", sentiment: "positive", bookingMade: true, transferred: false, time: "14 min ago", clientName: "Luxe Property",
+    transcript: [
+      { role: "agent", content: "Welcome to Luxe Property chatbot! How can I help you today?", time: "0:01" },
+      { role: "user", content: "I want to see the penthouse at 5th Ave.", time: "0:15" },
+      { role: "agent", content: "Excellent choice. That unit is stunning. We have tours available this weekend. Would Saturday at 11am work?", time: "0:22" },
+      { role: "user", content: "Yes, that works perfectly.", time: "0:40" },
+      { role: "agent", content: "Great! I've booked your viewing. You'll receive details via SMS.", time: "0:50" }
+    ]
+  },
   { id: "c4", agentName: "Luna", type: "phone", status: "missed", duration: "0:00", sentiment: "neutral", bookingMade: false, transferred: false, time: "21 min ago", clientName: "Coastal Dental" },
-  { id: "c5", agentName: "Marcus", type: "phone", status: "completed", duration: "3:22", sentiment: "negative", bookingMade: false, transferred: true, time: "34 min ago", clientName: "Luxe Property" },
+  { id: "c5", agentName: "Marcus", type: "phone", status: "completed", duration: "3:22", sentiment: "negative", bookingMade: false, transferred: true, time: "34 min ago", clientName: "Luxe Property",
+    transcript: [
+      { role: "agent", content: "Hello, this is Marcus from Luxe Property. How can I help?", time: "0:02" },
+      { role: "user", content: "I've been waiting for a callback for three days now. This is unacceptable.", time: "0:10" },
+      { role: "agent", content: "I am very sorry to hear that. Let me check the status of your request immediately.", time: "0:25" },
+      { role: "user", content: "I don't want to wait anymore. Put me through to your manager.", time: "0:45" },
+      { role: "agent", content: "I understand. One moment while I transfer you to the office manager.", time: "1:05" }
+    ]
+  },
   { id: "c6", agentName: "Olivia", type: "phone", status: "completed", duration: "5:11", sentiment: "positive", bookingMade: true, transferred: false, time: "41 min ago", clientName: "Ironclad Insurance" },
   { id: "c7", agentName: "Noah", type: "web", status: "completed", duration: "3:45", sentiment: "positive", bookingMade: true, transferred: false, time: "55 min ago", clientName: "Greenfield Vet" },
   { id: "c8", agentName: "Emma", type: "phone", status: "completed", duration: "7:23", sentiment: "neutral", bookingMade: false, transferred: true, time: "1 hr ago", clientName: "Bright Smile" },

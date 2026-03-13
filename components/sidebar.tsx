@@ -27,38 +27,38 @@ const navSections = [
   {
     label: "OVERVIEW",
     items: [
-      { name: "Dashboard", href: "/", icon: LayoutDashboard },
-      { name: "Analytics", href: "/analytics", icon: BarChart3 },
+      { name: "Dashboard", href: "/app", icon: LayoutDashboard },
+      { name: "Analytics", href: "/app/analytics", icon: BarChart3 },
     ],
   },
   {
     label: "CALLING",
     items: [
-      { name: "Outbound Calls", href: "/outbound", icon: Send },
-      { name: "Call Logs", href: "/call-logs", icon: PhoneCall },
-      { name: "QA Review", href: "/qa-review", icon: ClipboardCheck },
+      { name: "Outbound Calls", href: "/app/outbound", icon: Send },
+      { name: "Call Logs", href: "/app/call-logs", icon: PhoneCall },
+      { name: "QA Review", href: "/app/qa-review", icon: ClipboardCheck },
     ],
   },
   {
     label: "AGENTS & VOICES",
     items: [
-      { name: "Agents", href: "/agents", icon: Bot },
-      { name: "Squads", href: "/squads", icon: GitBranch },
-      { name: "Voice Library", href: "/voices", icon: Mic },
-      { name: "Phone Numbers", href: "/phone-numbers", icon: Phone },
+      { name: "Agents", href: "/app/agents", icon: Bot },
+      { name: "Squads", href: "/app/squads", icon: GitBranch },
+      { name: "Voice Library", href: "/app/voices", icon: Mic },
+      { name: "Phone Numbers", href: "/app/phone-numbers", icon: Phone },
     ],
   },
   {
     label: "MANAGEMENT",
     items: [
-      { name: "Clients", href: "/clients", icon: Users },
+      { name: "Clients", href: "/app/clients", icon: Users },
     ],
   },
   {
     label: "DEVELOPER",
     items: [
-      { name: "Developers", href: "/developers", icon: Code2 },
-      { name: "Settings", href: "/settings", icon: Settings },
+      { name: "Developers", href: "/app/developers", icon: Code2 },
+      { name: "Settings", href: "/app/settings", icon: Settings },
     ],
   },
 ];
@@ -92,12 +92,12 @@ export function Sidebar() {
         {/* Logo */}
         <div className="flex items-center justify-between h-[64px] px-4 border-b" style={{ borderColor: "var(--color-sidebar-border)" }}>
           <Link href="/" className="flex items-center gap-2.5 min-w-0">
-            <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center">
-              <Bot className="h-4.5 w-4.5 text-white" strokeWidth={2} />
+            <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-[#00ff9c] flex items-center justify-center shadow-[0_0_15px_rgba(0,255,156,0.3)]">
+              <Bot className="h-4.5 w-4.5 text-[#050505]" strokeWidth={2.5} />
             </div>
             {!collapsed && (
               <span className="text-[15px] font-semibold text-white truncate tracking-tight">
-                Speak Club
+                Speak-Club
               </span>
             )}
           </Link>
@@ -142,11 +142,11 @@ export function Sidebar() {
                         "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150",
                         collapsed && "justify-center px-0",
                         isActive
-                          ? "text-blue-400"
-                          : "hover:bg-white/[0.06]"
+                          ? "text-[#00ff9c]"
+                          : "hover:bg-[#00ff9c]/[0.05]"
                       )}
                       style={{
-                        color: isActive ? "#60a5fa" : "var(--color-sidebar-text)",
+                        color: isActive ? "#00ff9c" : "var(--color-sidebar-text)",
                         background: isActive ? "var(--color-sidebar-active)" : undefined,
                       }}
                       title={collapsed ? item.name : undefined}
@@ -165,8 +165,8 @@ export function Sidebar() {
       {/* Footer */}
       <div className="px-3 py-3 border-t space-y-1" style={{ borderColor: "var(--color-sidebar-border)" }}>
         <div className={cn("flex items-center gap-2.5 px-2 py-1.5", collapsed && "justify-center px-0")}>
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-xs font-bold text-white">A</span>
+          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#00ff9c] to-[#00b36b] flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(0,255,156,0.2)]">
+            <span className="text-xs font-bold text-[#050505]">A</span>
           </div>
           {!collapsed && (
             <div className="min-w-0 flex-1">
@@ -176,7 +176,7 @@ export function Sidebar() {
           )}
         </div>
         <Link
-          href="/login"
+          href="/api/logout"
           className={cn(
             "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150 hover:bg-white/[0.06] w-full",
             collapsed && "justify-center px-0"

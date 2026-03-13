@@ -84,183 +84,188 @@ export function AgentForm({ initialData, isEditing = false }: AgentFormProps) {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto pb-12">
+    <div className="max-w-[1200px] mx-auto pb-20">
       {/* ── Sticky Header ───────────────────────────── */}
-      <div className="sticky top-0 z-40 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-card-border)] pb-4 pt-6 mb-6 flex items-center justify-between animate-fade-in">
-        <div className="flex items-center gap-4">
-          <Link href="/agents" className="p-2 -ml-2 rounded-xl hover:bg-zinc-200/50 text-zinc-500 transition-colors">
+      <div className="sticky top-0 z-40 bg-black/60 backdrop-blur-xl border-b border-[#00ff9c]/10 pb-6 pt-8 mb-8 flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-500">
+        <div className="flex items-center gap-6">
+          <Link href="/agents" className="p-2.5 -ml-2 rounded-xl hover:bg-white/5 text-zinc-500 hover:text-[#00ff9c] transition-all border border-transparent hover:border-[#00ff9c]/10">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h1 className="text-[22px] font-bold tracking-tight text-zinc-900">
-              {isEditing ? "Edit Agent" : "Create New Agent"}
+            <h1 className="text-[24px] font-bold tracking-widest text-white font-mono uppercase">
+              {isEditing ? "EDIT_AGENT_PROTOCOL" : "INIT_NEW_AGENT"}
             </h1>
-            <p className="mt-0.5 text-[13px] text-zinc-400">
-              {isEditing ? `Managing ${initialData?.agent_name}` : "Configure voice, instructions, and tools"}
+            <p className="mt-1 text-[11px] text-zinc-600 font-mono uppercase tracking-tighter">
+              {isEditing ? `MGMT_NODE: ${initialData?.agent_name}` : "CONFIG_VOICE_NEURAL_UPLINK_TOOLS"}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium text-zinc-700 bg-white border border-zinc-200 hover:bg-zinc-50 rounded-xl transition-colors shadow-sm">
+        <div className="flex items-center gap-3">
+          <button className="inline-flex items-center gap-2 px-6 py-3 text-[11px] font-bold text-zinc-400 bg-white/5 border border-white/10 hover:border-[#00ff9c]/30 hover:text-white rounded-xl transition-all font-mono uppercase tracking-widest">
             <Play className="h-4 w-4" />
-            Test Call
+            INITIALIZE_TEST
           </button>
           <button 
             onClick={form.handleSubmit(onSubmit)}
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-xl transition-colors shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-8 py-3 text-[11px] font-bold text-black bg-[#00ff9c] hover:bg-[#00e68d] rounded-xl transition-all shadow-[0_0_20px_rgba(0,255,156,0.1)] disabled:opacity-50 font-mono uppercase tracking-widest"
           >
             <Save className="h-4 w-4" />
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isSubmitting ? "COMMIT_PENDING..." : "PROTOCOL_COMMIT"}
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* ── Left Column (Config) ───────────────────── */}
-        <div className="lg:col-span-2 space-y-6">
-          <GlassCard className="p-6">
-            <h2 className="text-[15px] font-bold text-zinc-900 mb-5">Basic Configuration</h2>
+        <div className="lg:col-span-2 space-y-8">
+          <GlassCard className="p-8">
+            <h2 className="text-[12px] font-bold text-[#00ff9c] mb-6 font-mono uppercase tracking-[0.2em]">CORE_CONFIGURATION</h2>
             
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5">Agent Name</label>
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">AGENT_IDENTIFIER</label>
                   <input
                     {...form.register("agent_name")}
-                    className="w-full px-4 py-2.5 text-[13px] border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all"
-                    placeholder="e.g. Booking Assistant"
+                    className="w-full px-5 py-3.5 text-[13px] bg-black border border-[#00ff9c]/10 rounded-xl text-white focus:border-[#00ff9c] outline-none transition-all font-mono"
+                    placeholder="e.g. UPLINK_NODE_01"
                   />
                   {form.formState.errors.agent_name && (
-                    <p className="text-red-500 text-[11px] mt-1">{form.formState.errors.agent_name.message}</p>
+                    <p className="text-red-500 text-[10px] mt-1 font-mono">{form.formState.errors.agent_name.message}</p>
                   )}
                 </div>
-                <div>
-                  <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5">Voice Selection</label>
-                  <select
-                    {...form.register("voice_id")}
-                    className="w-full px-4 py-2.5 text-[13px] border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all appearance-none cursor-pointer"
-                  >
-                    <option value="11labs-rachel">ElevenLabs - Rachel (Female, Calm)</option>
-                    <option value="11labs-adam">ElevenLabs - Adam (Male, Confident)</option>
-                    <option value="openai-alloy">OpenAI - Alloy (Neutral)</option>
-                  </select>
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">NEURAL_VOICE_UPLINK</label>
+                  <div className="relative">
+                    <select
+                      {...form.register("voice_id")}
+                      className="w-full px-5 py-3.5 text-[13px] bg-black border border-[#00ff9c]/10 rounded-xl text-white focus:border-[#00ff9c] outline-none transition-all appearance-none cursor-pointer font-mono"
+                    >
+                      <option value="11labs-rachel">ElevenLabs - Rachel (Neuro, Calm)</option>
+                      <option value="11labs-adam">ElevenLabs - Adam (Neuro, Confident)</option>
+                      <option value="openai-alloy">OpenAI - Alloy (Synthesized)</option>
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-600">
+                      <Plus className="h-3 w-3 rotate-45" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5">Description (Internal)</label>
+              <div className="space-y-2">
+                <label className="block text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">INTERNAL_IDENT_DESC</label>
                 <input
                   {...form.register("description")}
-                  className="w-full px-4 py-2.5 text-[13px] border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all"
-                  placeholder="What is this agent used for?"
+                  className="w-full px-5 py-3.5 text-[13px] bg-black border border-[#00ff9c]/10 rounded-xl text-white focus:border-[#00ff9c] outline-none transition-all font-mono"
+                  placeholder="PROTOCOL_USE_CASE_DATA"
                 />
               </div>
 
-              <div>
-                <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5 flex justify-between">
-                  <span>System Prompt</span>
-                  <span className="text-zinc-400 font-normal">Core Instructions</span>
+              <div className="space-y-2">
+                <label className="block text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono flex justify-between">
+                  <span>SYSTEM_PROMPT_ARCHITECTURE</span>
+                  <span className="text-[#00ff9c]/40 font-normal">CORE_LOGIC_PROTOCOLS</span>
                 </label>
                 <textarea
                   {...form.register("system_prompt")}
                   rows={12}
-                  className="w-full px-4 py-3 text-[13px] leading-relaxed border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all shadow-inner resize-y font-mono"
-                  placeholder="You are an AI assistant for [company]. Your job is to..."
+                  className="w-full px-6 py-5 text-[13px] leading-relaxed bg-black border border-[#00ff9c]/10 rounded-xl text-[#00ff9c] focus:border-[#00ff9c]/40 outline-none transition-all shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] resize-y font-mono"
+                  placeholder="# IDENTITY_PROTOCOL_INIT..."
                 />
                 {form.formState.errors.system_prompt && (
-                  <p className="text-red-500 text-[11px] mt-1">{form.formState.errors.system_prompt.message}</p>
+                  <p className="text-red-500 text-[10px] mt-1 font-mono">{form.formState.errors.system_prompt.message}</p>
                 )}
               </div>
             </div>
           </GlassCard>
 
-          <GlassCard className="p-6">
-            <h2 className="text-[15px] font-bold text-zinc-900 mb-1">Post-Call Automation</h2>
-            <p className="text-[12px] text-zinc-400 mb-5">Trigger workflows in n8n after the call ends</p>
+          <GlassCard className="p-8">
+            <h2 className="text-[12px] font-bold text-[#00ff9c] mb-1 font-mono uppercase tracking-[0.2em]">POST_CALL_AUTOMATION</h2>
+            <p className="text-[10px] text-zinc-600 mb-6 font-mono uppercase tracking-tighter italic">TRIGGER_N8N_WORKFLOW_ON_TERMINATION</p>
             
-            <div>
-              <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5 flex items-center gap-2">
-                <Webhook className="h-3.5 w-3.5" /> Post-Call Webhook URL
+            <div className="space-y-2">
+              <label className="block text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono flex items-center gap-2">
+                <Webhook className="h-3.5 w-3.5" /> COMMAND_WEBHOOK_URL
               </label>
               <input
                 {...form.register("post_call_webhook_url")}
-                className="w-full px-4 py-2.5 text-[13px] border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all font-mono"
-                placeholder="https://you-n8n.com/webhook/..."
+                className="w-full px-5 py-3.5 text-[13px] bg-black border border-[#00ff9c]/10 rounded-xl text-[#00ff9c] focus:border-[#00ff9c] outline-none transition-all font-mono opacity-80"
+                placeholder="https://uplink.n8n.io/..."
               />
               {form.formState.errors.post_call_webhook_url && (
-                <p className="text-red-500 text-[11px] mt-1">{form.formState.errors.post_call_webhook_url.message}</p>
+                <p className="text-red-500 text-[10px] mt-1 font-mono">{form.formState.errors.post_call_webhook_url.message}</p>
               )}
             </div>
           </GlassCard>
         </div>
 
         {/* ── Right Column (Tools) ────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between px-1">
-            <h2 className="text-[15px] font-bold text-zinc-900">Custom Tools</h2>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between px-2">
+            <h2 className="text-[12px] font-bold text-white font-mono uppercase tracking-widest">SUB_PROGRAMS</h2>
             <button
               onClick={() => append({ name: "", description: "", url: "" })}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-blue-600 bg-blue-50/50 hover:bg-blue-100/50 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-[10px] font-bold text-[#00ff9c] bg-[#00ff9c]/5 border border-[#00ff9c]/20 hover:bg-[#00ff9c]/10 rounded-lg transition-all font-mono uppercase tracking-widest"
             >
               <Plus className="h-3.5 w-3.5" />
-              Add Tool
+              ADD_TOOL
             </button>
           </div>
-          <p className="text-[12px] text-zinc-400 px-1 -mt-3">
-            Functions the AI can call mid-conversation to fetch data or trigger actions via n8n.
+          <p className="text-[10px] text-zinc-600 px-2 -mt-4 font-mono uppercase tracking-tighter">
+            EXTERNAL_CMD_INTERFACES_FOR_REALTIME_EXEC.
           </p>
 
           <div className="space-y-4 mt-2">
             {fields.length === 0 ? (
-              <div className="p-8 text-center rounded-2xl border-2 border-dashed border-zinc-200">
-                <Wrench className="h-8 w-8 text-zinc-300 mx-auto mb-2" />
-                <p className="text-[12px] font-medium text-zinc-500">No tools configured</p>
-                <p className="text-[11px] text-zinc-400 mt-1">Add a tool to let your AI take action.</p>
+              <div className="p-12 text-center rounded-2xl border border-dashed border-[#00ff9c]/10 bg-black/20">
+                <Wrench className="h-10 w-10 text-zinc-800 mx-auto mb-4" />
+                <p className="text-[11px] font-bold text-zinc-600 font-mono uppercase">NO_TOOLS_UPLINKED</p>
+                <p className="text-[10px] text-zinc-700 mt-1 font-mono uppercase tracking-tighter">ATTACH_CMD_INTERFACES</p>
               </div>
             ) : (
               fields.map((field, index) => (
-                <div key={field.id} className="p-5 bg-white border border-zinc-200 rounded-2xl shadow-sm relative group animate-fade-in-up">
+                <div key={field.id} className="p-6 bg-black border border-[#00ff9c]/20 rounded-2xl shadow-xl relative group animate-in fade-in slide-in-from-bottom-2 duration-300">
                   <button
                     onClick={() => remove(index)}
-                    className="absolute top-4 right-4 p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    className="absolute top-5 right-5 p-2 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all border border-transparent hover:border-red-500/20"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
                   
-                  <div className="space-y-4 pr-8">
-                    <div>
-                      <label className="block text-[11px] font-bold tracking-wider text-zinc-500 uppercase mb-1.5">Tool Name</label>
+                  <div className="space-y-5 pr-10">
+                    <div className="space-y-1.5">
+                      <label className="block text-[9px] font-bold tracking-[0.2em] text-zinc-600 uppercase font-mono">PROGRAM_ID</label>
                       <input
                         {...form.register(`tools.${index}.name`)}
-                        className="w-full px-3 py-2 text-[13px] font-medium border-b border-zinc-200 focus:border-blue-400 outline-none transition-colors bg-transparent placeholder-zinc-300"
-                        placeholder="e.g. check_availability"
+                        className="w-full px-4 py-2 text-[13px] font-mono border-b border-[#00ff9c]/10 focus:border-[#00ff9c] outline-none transition-all bg-transparent text-[#00ff9c] placeholder-zinc-800"
+                        placeholder="e.g. DATA_QUERY_01"
                       />
                       {form.formState.errors.tools?.[index]?.name && (
-                        <p className="text-red-500 text-[10px] mt-1">{form.formState.errors.tools[index]?.name?.message}</p>
+                        <p className="text-red-500 text-[9px] mt-1 font-mono">{form.formState.errors.tools[index]?.name?.message}</p>
                       )}
                     </div>
-                    <div>
-                      <label className="block text-[11px] font-bold tracking-wider text-zinc-500 uppercase mb-1.5">Description to AI</label>
+                    <div className="space-y-1.5">
+                      <label className="block text-[9px] font-bold tracking-[0.2em] text-zinc-600 uppercase font-mono">LOGIC_DESC_FOR_AI</label>
                       <textarea
                         {...form.register(`tools.${index}.description`)}
                         rows={2}
-                        className="w-full px-3 py-2 text-[12px] border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all resize-none shadow-inner"
-                        placeholder="When to use this tool..."
+                        className="w-full px-4 py-3 text-[12px] bg-black/40 border border-[#00ff9c]/10 rounded-xl text-white focus:border-[#00ff9c]/40 outline-none transition-all resize-none font-mono"
+                        placeholder="CMD_EXECUTION_CONTEXT..."
                       />
                       {form.formState.errors.tools?.[index]?.description && (
-                        <p className="text-red-500 text-[10px] mt-1">{form.formState.errors.tools[index]?.description?.message}</p>
+                        <p className="text-red-500 text-[9px] mt-1 font-mono">{form.formState.errors.tools[index]?.description?.message}</p>
                       )}
                     </div>
-                    <div>
-                      <label className="block text-[11px] font-bold tracking-wider text-zinc-500 uppercase mb-1.5">n8n Webhook URL</label>
+                    <div className="space-y-1.5">
+                      <label className="block text-[9px] font-bold tracking-[0.2em] text-zinc-600 uppercase font-mono">UPLINK_REST_PATH</label>
                       <input
                         {...form.register(`tools.${index}.url`)}
-                        className="w-full px-3 py-2 text-[12px] font-mono border border-zinc-200 rounded-xl bg-zinc-50/50 focus:bg-white outline-none transition-all"
-                        placeholder="https://..."
+                        className="w-full px-4 py-3 text-[12px] font-mono bg-black/40 border border-[#00ff9c]/10 rounded-xl text-[#00ff9c]/60 focus:border-[#00ff9c] outline-none transition-all"
+                        placeholder="https://api.node..."
                       />
                       {form.formState.errors.tools?.[index]?.url && (
-                        <p className="text-red-500 text-[10px] mt-1">{form.formState.errors.tools[index]?.url?.message}</p>
+                        <p className="text-red-500 text-[9px] mt-1 font-mono">{form.formState.errors.tools[index]?.url?.message}</p>
                       )}
                     </div>
                   </div>

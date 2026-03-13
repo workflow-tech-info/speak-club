@@ -33,10 +33,13 @@ interface StatusPillProps {
 }
 
 export function StatusPill({ variant, className }: StatusPillProps) {
+  const isNeon = variant === 'active' || variant === 'completed' || variant === 'positive' || variant === 'booking' || variant === 'reviewed';
+  
   return (
     <span className={cn(
-      "inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wide",
+      "inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-widest font-mono",
       variantStyles[variant],
+      isNeon && "shadow-[0_0_8px_rgba(0,255,156,0.15)] border border-[var(--color-pill-green-text)]/10",
       className
     )}>
       {labels[variant] ?? variant}

@@ -42,13 +42,13 @@ export function AddPhoneNumberModal({ isOpen, onClose, onAdd }: AddPhoneNumberMo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <GlassCard className="w-full max-w-lg overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between p-6 border-b border-zinc-100 bg-zinc-50/50">
-          <h2 className="text-lg font-bold text-zinc-900">Import SIP URI</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
+      <GlassCard className="w-full max-w-lg overflow-hidden shadow-[0_0_50px_rgba(0,255,156,0.1)] animate-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between p-6 border-b border-[#00ff9c]/10 bg-white/[0.02]">
+          <h2 className="text-[15px] font-bold text-[#00ff9c] tracking-widest font-mono uppercase">IMPORT_SIP_URI</h2>
           <button 
             onClick={resetAndClose}
-            className="p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-xl transition-colors"
+            className="p-2 text-zinc-500 hover:text-[#00ff9c] hover:bg-[#00ff9c]/5 rounded-xl transition-all"
           >
             <X className="h-5 w-5" />
           </button>
@@ -56,59 +56,62 @@ export function AddPhoneNumberModal({ isOpen, onClose, onAdd }: AddPhoneNumberMo
 
         {step === "form" ? (
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
-            <div className="space-y-1.5">
-              <label className="text-[13px] font-bold text-zinc-700">SIP Identifier</label>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest font-mono">SIP_IDENTIFIER</label>
               <input
                 required
                 value={formData.sipIdentifier}
                 onChange={(e) => setFormData({ ...formData, sipIdentifier: e.target.value })}
-                className="w-full px-4 py-2.5 text-[14px] bg-zinc-50 border border-zinc-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                placeholder="my-example-identifier"
+                className="w-full px-4 py-3 text-[13px] bg-black border border-[#00ff9c]/20 rounded-xl focus:border-[#00ff9c] text-white outline-none transition-all font-mono placeholder:text-zinc-800"
+                placeholder="id_alpha_omega"
               />
-              <p className="text-[11px] text-zinc-400">Will be used as: <span className="text-blue-500">sip:{formData.sipIdentifier || 'identifier'}@sip.vapi.ai</span></p>
+              <p className="text-[10px] text-zinc-600 font-mono">ORIGIN: <span className="text-[#00ff9c]">sip:{formData.sipIdentifier || '...'}@sip.vapi.ai</span></p>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-[13px] font-bold text-zinc-700">Label</label>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest font-mono">SYSTEM_LABEL</label>
               <input
                 required
                 value={formData.label}
                 onChange={(e) => setFormData({ ...formData, label: e.target.value })}
-                className="w-full px-4 py-2.5 text-[14px] bg-zinc-50 border border-zinc-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                placeholder="Label for SIP URI"
+                className="w-full px-4 py-3 text-[13px] bg-black border border-[#00ff9c]/20 rounded-xl focus:border-[#00ff9c] text-white outline-none transition-all font-mono placeholder:text-zinc-800"
+                placeholder="ENTRY_NODE_X"
               />
             </div>
 
             <div className="space-y-4 pt-2">
               <div className="flex items-center gap-2">
-                <span className="text-[13px] font-bold text-zinc-800">SIP Authentication (Optional)</span>
+                <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest font-mono">SIP_AUTH_METRICS (OPTIONAL)</span>
               </div>
               
-              <div className="space-y-1.5">
-                <label className="text-[12px] font-medium text-zinc-500">Username</label>
-                <input
-                  value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  className="w-full px-4 py-2.5 text-[14px] bg-zinc-50 border border-zinc-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                  placeholder="SIP Authentication Username"
-                />
-              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">USERNAME</label>
+                  <input
+                    value={formData.username}
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    className="w-full px-4 py-3 text-[13px] bg-black border border-[#00ff9c]/10 rounded-xl focus:border-[#00ff9c] text-white outline-none transition-all font-mono placeholder:text-zinc-900"
+                    placeholder="UID"
+                  />
+                </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[12px] font-medium text-zinc-500">Password</label>
-                <input
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full px-4 py-2.5 text-[14px] bg-zinc-50 border border-zinc-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
-                  placeholder="SIP Authentication Password"
-                />
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">PASSWORD</label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    className="w-full px-4 py-3 text-[13px] bg-black border border-[#00ff9c]/10 rounded-xl focus:border-[#00ff9c] text-white outline-none transition-all font-mono placeholder:text-zinc-900"
+                    placeholder="PASS"
+                  />
+                </div>
               </div>
             </div>
 
             <div className="pt-2">
-              <button className="text-blue-500 text-[12px] font-medium hover:underline flex items-center gap-1">
-                Read more about using SIP with Vapi in the documentation
+              <button type="button" className="text-[#00ff9c] text-[10px] font-bold hover:underline flex items-center gap-1 uppercase tracking-widest font-mono opacity-60 hover:opacity-100 transition-opacity">
+                <Info className="h-3 w-3" />
+                READ_PROTOCOLS_DOCUMENTATION
               </button>
             </div>
 
@@ -116,32 +119,32 @@ export function AddPhoneNumberModal({ isOpen, onClose, onAdd }: AddPhoneNumberMo
               <button
                 type="button"
                 onClick={resetAndClose}
-                className="px-6 py-2.5 text-[14px] font-semibold text-zinc-600 hover:bg-zinc-100 rounded-xl transition-colors"
+                className="px-6 py-3 text-[11px] font-bold text-zinc-500 hover:text-white uppercase tracking-widest font-mono transition-colors"
               >
-                Cancel
+                ABORT
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 text-[14px] font-semibold text-white bg-teal-800 hover:bg-teal-900 rounded-xl shadow-lg transition-all active:scale-95"
+                className="px-6 py-3 text-[11px] font-bold text-black bg-[#00ff9c] hover:bg-[#00e68d] rounded-xl shadow-[0_0_20px_rgba(0,255,156,0.2)] transition-all uppercase tracking-widest font-mono"
               >
-                Import SIP URI
+                INITIALIZE_SIP_LINK
               </button>
             </div>
           </form>
         ) : (
           <div className="p-12 flex flex-col items-center justify-center text-center space-y-4 animate-in zoom-in-95 duration-500">
-            <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-2">
-              <CheckCircle2 className="h-10 w-10 text-green-600" />
+            <div className="h-20 w-20 bg-[#00ff9c]/5 border border-[#00ff9c]/20 rounded-full flex items-center justify-center mb-2 shadow-[0_0_30px_rgba(0,255,156,0.1)]">
+              <CheckCircle2 className="h-10 w-10 text-[#00ff9c]" />
             </div>
-            <h3 className="text-xl font-bold text-zinc-900">Success!</h3>
-            <p className="text-zinc-500 text-sm max-w-[280px]">
-              SIP URI has been imported and added to your phone numbers.
+            <h3 className="text-xl font-bold text-white font-mono uppercase tracking-[0.2em]">SUCCESS!</h3>
+            <p className="text-zinc-500 text-[11px] font-mono uppercase tracking-widest leading-relaxed max-w-[280px]">
+              SIP_NODE_ESTABLISHED.<br/>INTEGRATION_COMPLETE.
             </p>
             <button
               onClick={resetAndClose}
-              className="mt-6 px-8 py-2.5 bg-zinc-900 text-white font-semibold rounded-xl hover:bg-zinc-800 transition-colors"
+              className="mt-6 px-10 py-3 bg-[#00ff9c] text-black font-bold rounded-xl hover:bg-[#00e68d] transition-all uppercase tracking-[0.2em] font-mono shadow-[0_0_20px_rgba(0,255,156,0.2)]"
             >
-              Done
+              DONE
             </button>
           </div>
         )}

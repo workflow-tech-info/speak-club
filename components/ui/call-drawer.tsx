@@ -9,20 +9,7 @@ interface CallDrawerProps {
   onClose: () => void;
 }
 
-// Mock transcript since original data only had simple fields
-const mockTranscript = [
-  { role: "agent", content: "Hello, this is Sophia calling from Meridian Health. Am I speaking with John?", time: "0:02" },
-  { role: "user", content: "Yes, this is John.", time: "0:08" },
-  { role: "agent", content: "Great! I'm calling to follow up on your recent request to schedule a consultation. Do you have a few minutes?", time: "0:12" },
-  { role: "user", content: "Sure, I have a moment now.", time: "0:20" },
-  { role: "agent", content: "Perfect. I see you were interested in our comprehensive health package. Would mornings or afternoons work better for your initial visit?", time: "0:25" },
-  { role: "user", content: "Afternoons are usually better for me. Maybe around 2 PM?", time: "0:38" },
-  { role: "agent", content: "Let me check our schedule for 2 PM. It looks like we have an opening next Tuesday at 2:30 PM. Would that work?", time: "0:45" },
-  { role: "user", content: "Yes, next Tuesday at 2:30 sounds great.", time: "0:52" },
-  { role: "agent", content: "Wonderful, I've got you booked. You'll receive a confirmation email shortly. Is there anything else I can help with today?", time: "1:01" },
-  { role: "user", content: "No, that's it. Thanks!", time: "1:08" },
-  { role: "agent", content: "You're welcome, John. Have a great day!", time: "1:12" }
-];
+// No longer using global mockTranscript, using call.transcript
 
 export function CallDrawer({ call, isOpen, onClose }: CallDrawerProps) {
   if (!isOpen) return null;
@@ -36,7 +23,7 @@ export function CallDrawer({ call, isOpen, onClose }: CallDrawerProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute inset-0 bg-zinc-900/20 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/60 backdrop-blur-md"
           onClick={onClose}
         />
 
@@ -45,20 +32,20 @@ export function CallDrawer({ call, isOpen, onClose }: CallDrawerProps) {
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="relative w-full max-w-lg bg-white h-full shadow-2xl border-l border-[var(--color-card-border)] flex flex-col z-50 overflow-hidden"
+          transition={{ type: "spring", damping: 30, stiffness: 200 }}
+          className="relative w-full max-w-lg bg-[#050505] h-full shadow-[0_0_50px_rgba(0,0,0,0.5)] border-l border-white/5 flex flex-col z-50 overflow-hidden"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-card-border)] bg-zinc-50/50">
+          <div className="flex items-center justify-between px-6 py-5 border-b border-white/5 bg-white/[0.01]">
             <div>
-              <h2 className="text-[17px] font-bold text-zinc-900">Call Details</h2>
-              <p className="text-[12px] text-zinc-500 mt-0.5">{call?.id || "Unknown Call"}</p>
+              <h2 className="text-sm font-bold tracking-widest text-[#00ff9c] uppercase font-mono">CALL_LOG_DECRYPTED</h2>
+              <p className="text-[11px] text-zinc-600 mt-1 font-mono uppercase tracking-tighter">ID: {call?.id || "NULL"}</p>
             </div>
             <button
               onClick={onClose}
-              className="p-2 -mr-2 text-zinc-400 hover:bg-zinc-200/50 hover:text-zinc-600 rounded-full transition-colors"
+              className="p-2 -mr-2 text-zinc-500 hover:text-[#00ff9c] hover:bg-[#00ff9c]/5 rounded-lg transition-all"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </button>
           </div>
 
@@ -67,84 +54,70 @@ export function CallDrawer({ call, isOpen, onClose }: CallDrawerProps) {
               
               {/* Summary Cards */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-zinc-50 rounded-xl p-3 border border-zinc-100">
-                  <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
-                    <Clock className="h-3.5 w-3.5" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider">Duration</span>
+                {[
+                  { label: 'Duration', value: call?.duration, icon: Clock },
+                  { label: 'Status', value: call && <StatusPill variant={call.status} />, icon: AlertCircle },
+                  { label: 'Sentiment', value: call && <StatusPill variant={call.sentiment} />, icon: BarChart3 },
+                  { label: 'Agent_Auth', value: call?.agentName, icon: null }
+                ].map((item, i) => (
+                  <div key={i} className="bg-white/[0.02] rounded-xl p-3.5 border border-white/5 group hover:border-[#00ff9c]/20 transition-all">
+                    <div className="flex items-center gap-1.5 text-zinc-500 mb-2">
+                      {item.icon && <item.icon className="h-3 w-3" />}
+                      <span className="text-[10px] font-bold uppercase tracking-widest font-mono">{item.label}</span>
+                    </div>
+                    <div className="text-[14px] font-bold text-white font-mono">{item.value}</div>
                   </div>
-                  <p className="text-[15px] font-semibold text-zinc-900">{call?.duration}</p>
-                </div>
-                <div className="bg-zinc-50 rounded-xl p-3 border border-zinc-100">
-                  <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
-                    <AlertCircle className="h-3.5 w-3.5" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider">Status</span>
-                  </div>
-                  <div className="mt-0.5">
-                    {call && <StatusPill variant={call.status} />}
-                  </div>
-                </div>
-                <div className="bg-zinc-50 rounded-xl p-3 border border-zinc-100">
-                  <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
-                    <BarChart3 className="h-3.5 w-3.5" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider">Sentiment</span>
-                  </div>
-                  <div className="mt-0.5">
-                    {call && <StatusPill variant={call.sentiment} />}
-                  </div>
-                </div>
-                <div className="bg-zinc-50 rounded-xl p-3 border border-zinc-100">
-                  <div className="flex items-center gap-1.5 text-zinc-400 mb-1">
-                    <span className="text-[11px] font-bold uppercase tracking-wider">Agent</span>
-                  </div>
-                  <p className="text-[13px] font-semibold text-zinc-900">{call?.agentName}</p>
-                </div>
+                ))}
               </div>
 
               {/* Audio Player (Mock UI) */}
               <div>
-                <h3 className="text-[13px] font-bold text-zinc-900 mb-2">Recording</h3>
-                <div className="flex items-center gap-3 bg-zinc-900 rounded-full py-2 px-3 text-white">
-                  <button className="p-1 hover:bg-zinc-800 rounded-full transition-colors">
-                    <PlayCircle className="h-5 w-5" />
+                <h3 className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest font-mono mb-3">SECURE_RECORDING_STREAM</h3>
+                <div className="flex items-center gap-3 bg-black border border-[#00ff9c]/20 rounded-xl py-3 px-4 shadow-[0_0_20px_rgba(0,255,156,0.05)]">
+                  <button className="p-1 px-2 text-[#00ff9c] hover:scale-110 transition-transform">
+                    <PlayCircle className="h-6 w-6" />
                   </button>
-                  <div className="flex-1 h-1 bg-zinc-700 rounded-full overflow-hidden">
-                    <div className="h-full w-1/3 bg-blue-500 rounded-full" />
+                  <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full w-1/3 bg-gradient-to-r from-[#00ff9c] to-[#00b36b] rounded-full shadow-[0_0_10px_#00ff9c]" />
                   </div>
-                  <span className="text-[10px] text-zinc-400 font-mono pr-2">0:45 / {call?.duration}</span>
+                  <span className="text-[10px] text-[#00ff9c] font-mono font-bold tracking-tighter">00:45 / {call?.duration}</span>
                 </div>
               </div>
 
-              <hr className="border-t border-zinc-100" />
+               <div className="h-px bg-white/5" />
 
-              {/* Transcript */}
-              <div>
-                <h3 className="text-[13px] font-bold text-zinc-900 mb-4 bg-white/90 sticky top-0 py-2 z-10">Transcript</h3>
-                <div className="space-y-4 pb-12">
-                  {mockTranscript.map((msg, i) => {
-                    const isUser = msg.role === "user";
-                    return (
-                      <div key={i} className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}>
-                        <div className="flex items-center gap-2 mb-1 px-1">
-                          <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-widest">
-                            {isUser ? "User" : call?.agentName}
-                          </span>
-                          <span className="text-[10px] text-zinc-300 font-mono">{msg.time}</span>
+                <h3 className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest font-mono mb-6 sticky top-0 py-2 z-10 bg-[#050505]/95">TRANSCRIPT_DECRYPTED</h3>
+                <div className="space-y-6 pb-12">
+                  {call?.transcript && call.transcript.length > 0 ? (
+                    call.transcript.map((msg, i) => {
+                      const isUser = msg.role === "user";
+                      return (
+                        <div key={i} className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}>
+                          <div className="flex items-center gap-2 mb-2 px-1">
+                            <span className={`text-[9px] font-bold uppercase tracking-[0.2em] font-mono ${isUser ? "text-zinc-500" : "text-[#00ff9c]"}`}>
+                              {isUser ? "SOURCE_USER" : `AGENT_${call?.agentName.toUpperCase()}`}
+                            </span>
+                            <span className="text-[9px] text-zinc-700 font-mono">{msg.time}</span>
+                          </div>
+                          <div
+                            className={`max-w-[90%] px-4 py-3 rounded-lg text-[13px] leading-relaxed font-mono tracking-tight ${
+                              isUser 
+                                ? "bg-white/[0.03] text-zinc-300 border border-white/5 rounded-tr-none" 
+                                : "bg-[#00ff9c]/[0.02] text-white border border-[#00ff9c]/10 rounded-tl-none shadow-[0_0_15px_rgba(0,255,156,0.03)]"
+                            }`}
+                          >
+                            {msg.content}
+                          </div>
                         </div>
-                        <div
-                          className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-[13.5px] leading-relaxed shadow-sm ${
-                            isUser 
-                              ? "bg-blue-500 text-white rounded-tr-sm" 
-                              : "bg-zinc-100 text-zinc-800 rounded-tl-sm border border-zinc-200/60"
-                          }`}
-                        >
-                          {msg.content}
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-20 text-center border border-white/5 rounded-2xl bg-white/[0.01]">
+                      <AlertCircle className="h-6 w-6 text-zinc-800 mb-4" />
+                      <p className="text-[11px] text-zinc-600 font-mono uppercase tracking-widest">NO_TRANSCRIPT_AVAILABLE</p>
+                    </div>
+                  )}
                 </div>
-              </div>
-
             </div>
           </div>
         </motion.div>
