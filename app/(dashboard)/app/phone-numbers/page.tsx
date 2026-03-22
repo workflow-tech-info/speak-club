@@ -1,33 +1,42 @@
 "use client";
 
-import { useState } from "react";
-import { PageHeader } from "@/components/ui/page-header";
-import { GlassCard } from "@/components/ui/page-header";
+import { useEffect, useState } from "react";
+import { PageHeader, GlassCard } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
-import { phoneNumbers as initialPhoneNumbers, PhoneNumber } from "@/lib/mock-data";
-import { Plus, Bot, Trash2 } from "lucide-react";
+import { db } from "@/lib/insforge";
+import { Plus, Bot, Trash2, Loader2 } from "lucide-react";
 import { AddPhoneNumberModal } from "@/components/add-phone-number-modal";
 
 export default function PhoneNumbersPage() {
-  const [pns, setPns] = useState<PhoneNumber[]>(initialPhoneNumbers);
+  const [pns, setPns] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddNumber = (newNumber: { number: string; nickname: string; sipIdentifier: string }) => {
-    const pn: PhoneNumber = {
-      id: `p${Date.now()}`,
-      number: newNumber.number,
-      nickname: newNumber.nickname,
-      agentName: "Unassigned",
-      agentRole: "No agent assigned",
-      status: "active",
-      createdAt: "Just now",
-    };
-    setPns([pn, ...pns]);
+  const fetchData = async () => {
+    setLoading(true);
+    const { data } = await db.phoneNumbers.getAll();
+    if (data) setPns(data);
+    setLoading(false);
   };
 
-  const handleDeleteNumber = (id: string) => {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleAddNumber = async (newNumber: { number: string; nickname: string; sipIdentifier: string }) => {
+    const { error } = await db.phoneNumbers.create({
+      number: newNumber.number,
+      nickname: newNumber.nickname,
+      status: "active",
+      // Unassigned for now
+    });
+    if (!error) fetchData();
+  };
+
+  const handleDeleteNumber = async (id: string) => {
     if (confirm("Are you sure you want to delete this phone number?")) {
-      setPns(pns.filter((pn) => pn.id !== id));
+      const { error } = await db.phoneNumbers.delete(id);
+      if (!error) fetchData();
     }
   };
 
@@ -76,15 +85,15 @@ export default function PhoneNumbersPage() {
                         <Bot className="h-4 w-4 text-[#00ff9c] opacity-50" />
                       </div>
                       <span className="text-[12px] text-zinc-300 font-mono">
-                        {pn.agentName.toUpperCase()} {pn.agentRole !== "No agent assigned" && ` // ${pn.agentRole.toUpperCase()}`}
+                        {pn.agent ? pn.agent.name.toUpperCase() : "UNASSIGNED"} {pn.agent?.role && ` // ${pn.agent.role.toUpperCase()}`}
                       </span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <StatusPill variant={pn.status} />
                   </td>
-                  <td className="px-6 py-4 text-[11px] text-zinc-600 font-mono text-right whitespace-nowrap">
-                    {pn.createdAt.toUpperCase()}
+                  <td className="px-6 py-4 text-[11px] text-zinc-600 font-mono text-right whitespace-nowrap uppercase">
+                    {new Date(pn.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-4">
                     <button 

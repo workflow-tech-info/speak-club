@@ -1,10 +1,10 @@
 "use client";
 
-import { PageHeader } from "@/components/ui/page-header";
-import { GlassCard } from "@/components/ui/page-header";
+import { useEffect, useState } from "react";
+import { PageHeader, GlassCard } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
-import { qaReviews } from "@/lib/mock-data";
-import { CheckCircle2, AlertTriangle, Clock, Star } from "lucide-react";
+import { db } from "@/lib/insforge";
+import { CheckCircle2, AlertTriangle, Clock, Star, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const scoreColor = (score: number) => {
@@ -26,10 +26,24 @@ const statusIcons = {
 };
 
 export default function QAReviewPage() {
+  const [qaReviews, setQaReviews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchQA() {
+      const { data } = await db.qaReviews.getAll();
+      if (data) setQaReviews(data);
+      setLoading(false);
+    }
+    fetchQA();
+  }, []);
+
   const pending = qaReviews.filter(r => r.status === "pending").length;
   const flagged = qaReviews.filter(r => r.status === "flagged").length;
   const reviewed = qaReviews.filter(r => r.status === "reviewed").length;
-  const avgScore = Math.round(qaReviews.reduce((sum, r) => sum + r.score, 0) / qaReviews.length);
+  const avgScore = qaReviews.length > 0 
+    ? Math.round(qaReviews.reduce((sum, r) => sum + r.score, 0) / qaReviews.length)
+    : 0;
 
   return (
     <>
@@ -69,12 +83,12 @@ export default function QAReviewPage() {
             <div key={review.id} className="px-6 py-4 hover:bg-[#00ff9c]/[0.02] transition-colors cursor-pointer group">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <div className="mt-0.5">{statusIcons[review.status]}</div>
+                  <div className="mt-0.5">{statusIcons[review.status as keyof typeof statusIcons]}</div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="text-[13px] font-bold text-white font-mono">{review.agentName}</p>
+                      <p className="text-[13px] font-bold text-white font-mono">{review.call?.agent?.name || "Unknown Agent"}</p>
                       <span className="text-[11px] text-zinc-700 font-mono">·</span>
-                      <span className="text-[12px] text-zinc-500 font-mono italic">{review.clientName}</span>
+                      <span className="text-[12px] text-zinc-500 font-mono italic">{review.call?.client?.name || "Unknown Client"}</span>
                     </div>
                     <p className="text-[12px] text-zinc-400 mt-0.5 line-clamp-1 font-mono tracking-tight">{review.summary}</p>
                   </div>
@@ -88,15 +102,17 @@ export default function QAReviewPage() {
                   )}>
                     {review.score}/100
                   </div>
-                  <StatusPill variant={review.sentiment} />
-                  <span className="text-[11px] text-zinc-600 font-mono tabular-nums">{review.time}</span>
+                  <StatusPill variant={review.call?.sentiment || "neutral"} />
+                  <span className="text-[11px] text-zinc-600 font-mono tabular-nums uppercase">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-4 ml-7">
-                <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">DURATION: {review.duration}</span>
-                {review.reviewedBy && (
+                <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">DURATION: {review.call?.duration}</span>
+                {review.reviewed_by && (
                   <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest">
-                    REVIEWED_BY: <span className="text-[#00ff9c] font-bold">{review.reviewedBy.toUpperCase()}</span>
+                    REVIEWED_BY: <span className="text-[#00ff9c] font-bold">{review.reviewed_by.toUpperCase()}</span>
                   </span>
                 )}
               </div>

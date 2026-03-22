@@ -1,51 +1,98 @@
 const WebSocket = require('ws');
+const { store, addLog } = require('./store');
+
+// Dummy silent audio response (Base64) - 1 second of PCM 16-bit 8000 Hz mono silence
+const dummyAudioBase64 = Buffer.alloc(16000, 0).toString('base64');
 
 // Placeholder pipeline function
-function processAudioFrame(frame) {
-  // Future integrations: ElevenLabs, Vapi, STT engines
-  console.log("[AUDIO] audio frame received");
+function processAudioFrame(session, base64Audio, ws) {
+  // Pass to STT/LLM/TTS in the future
+  
+  // Test Mode: respond every 20 packets
+  if (session && session.packets_received % 20 === 0) {
+    const responseEvent = {
+      event: 'media',
+      stream_id: session.stream_id,
+      media: {
+        payload: dummyAudioBase64
+      }
+    };
+    ws.send(JSON.stringify(responseEvent));
+    addLog({ type: 'server_response', stream_id: session.stream_id, action: 'sent_dummy_audio' });
+  }
 }
 
 function setupWebSocket(server) {
-  // Path aligns with wss://voice.workflow-tech.info/call-stream definition
   const wss = new WebSocket.Server({ server, path: '/call-stream' });
 
   wss.on('connection', (ws, req) => {
     const connectionId = Math.random().toString(36).substring(2, 15);
-    const clientIp = req.socket.remoteAddress;
-    const timestamp = new Date().toISOString();
+    let currentStreamId = null;
 
-    console.log(`[WS] Client Connected | ID: ${connectionId} | IP: ${clientIp} | Time: ${timestamp}`);
+    addLog({ type: 'connection', id: connectionId, ip: req.socket.remoteAddress, action: 'connected' });
 
-    // Optional Token Authentication
-    const url = new URL(req.url, `ws://${req.headers.host || 'localhost'}`);
-    const token = url.searchParams.get('token');
-    
-    if (process.env.VOICE_API_KEY && token !== process.env.VOICE_API_KEY) {
-      console.log(`[WS] Connection rejected: Invalid or missing token (ID: ${connectionId})`);
-      ws.close(1008, 'Unauthorized');
-      return;
-    }
-
-    // Handle incoming messages
     ws.on('message', (message, isBinary) => {
       if (isBinary) {
-        // Handle binary audio frames
-        console.log(`[WS MSG] Binary Frame | Size: ${message.length} bytes | ID: ${connectionId}`);
-        processAudioFrame(message);
-      } else {
-        // Handle JSON control messages
-        try {
-          const data = JSON.parse(message.toString());
-          console.log(`[WS MSG] JSON Control | Type: ${data.type || 'unknown'} | ID: ${connectionId}`);
-        } catch (e) {
-          console.log(`[WS MSG] Text Frame (Non-JSON) | Length: ${message.length} | ID: ${connectionId}`);
+        // Ignored. Assuming Bonvoice sends JSON messages with base64 media.
+        return;
+      }
+      
+      try {
+        const data = JSON.parse(message.toString());
+        addLog({ type: 'incoming_json', id: connectionId, event: data.event });
+
+        if (data.event === 'start') {
+          const { stream_id, call_id, from, to, timestamp } = data;
+          currentStreamId = stream_id;
+          
+          store.sessions[stream_id] = {
+            call_id,
+            from,
+            to,
+            packets_received: 0,
+            started_at: timestamp || new Date().toISOString(),
+            stream_id
+          };
+          
+          addLog({ type: 'start', stream_id, call_id, from, to });
+          console.log(`[WS] Start Call - Stream: ${stream_id}`);
+        } else if (data.event === 'media') {
+          const stream_id = currentStreamId || data.stream_id;
+          const session = store.sessions[stream_id];
+          
+          if (session) {
+            session.packets_received += 1;
+            
+            // Extract media parts
+            if (data.media && data.media.payload) {
+              const base64Audio = data.media.payload;
+              // Pass to process (which handles decoding and responses)
+              processAudioFrame(session, base64Audio, ws);
+            }
+          }
+        } else if (data.event === 'stop') {
+           const stream_id = currentStreamId || data.stream_id;
+           console.log(`[WS] Call Stopped - Stream: ${stream_id}`);
+           addLog({ type: 'stop', stream_id });
+           if (stream_id && store.sessions[stream_id]) {
+               // Don't delete immediately so dashboard can show them, or mark as ended.
+               store.sessions[stream_id].ended_at = new Date().toISOString();
+           }
+        } else {
+           // Other events
+           console.log(`[WS] Unknown Event: ${data.event}`);
         }
+      } catch (e) {
+        console.error(`[WS MSG ERROR] Failed to parse: ${e.message}`);
       }
     });
 
     ws.on('close', () => {
       console.log(`[WS] Client Disconnected | ID: ${connectionId}`);
+      if (currentStreamId && store.sessions[currentStreamId]) {
+         store.sessions[currentStreamId].ended_at = new Date().toISOString();
+      }
+      addLog({ type: 'disconnection', id: connectionId });
       clearInterval(heartbeatInterval);
     });
 

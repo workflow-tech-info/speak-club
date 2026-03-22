@@ -1,10 +1,10 @@
 "use client";
 
-import { PageHeader } from "@/components/ui/page-header";
-import { GlassCard } from "@/components/ui/page-header";
+import { useEffect, useState } from "react";
+import { PageHeader, GlassCard } from "@/components/ui/page-header";
 import { StatCard } from "@/components/ui/stat-card";
-import { analyticsData, sentimentData, analyticsStats } from "@/lib/mock-data";
-import { PhoneCall, Clock, Timer, TrendingUp, DollarSign, CalendarCheck, PhoneIncoming, ArrowRightLeft } from "lucide-react";
+import { db } from "@/lib/insforge";
+import { PhoneCall, Clock, Timer, TrendingUp, DollarSign, CalendarCheck, PhoneIncoming, ArrowRightLeft, Loader2 } from "lucide-react";
 import {
   AreaChart,
   Area,
@@ -19,6 +19,33 @@ import {
 } from "recharts";
 
 export default function AnalyticsPage() {
+  const [stats, setStats] = useState<any>(null);
+  const [dailyData, setDailyData] = useState<any[]>([]);
+  const [sentiment, setSentiment] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAnalytics() {
+      const [{ data: s }, { data: dd }, { data: sd }] = await Promise.all([
+        db.analytics.getOverallStats(),
+        db.analytics.getDailyStats(),
+        db.analytics.getSentimentDistribution()
+      ]);
+      if (s) setStats(s);
+      if (dd) setDailyData(dd);
+      if (sd) setSentiment(sd);
+      setLoading(false);
+    }
+    fetchAnalytics();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <Loader2 className="h-8 w-8 text-[#00ff9c] animate-spin" />
+      </div>
+    );
+  }
   return (
     <>
       <PageHeader
@@ -43,18 +70,18 @@ export default function AnalyticsPage() {
 
       {/* ── Top Stat Cards ────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-        <StatCard label="Total Calls" value={analyticsStats.totalCalls} icon={PhoneCall} subtext="last 30 days" delay={0} />
-        <StatCard label="Total Minutes" value={analyticsStats.totalMinutes} icon={Clock} subtext="last 30 days" delay={40} />
-        <StatCard label="Avg Duration" value={analyticsStats.avgDuration} icon={Timer} subtext="per call" delay={80} />
-        <StatCard label="Success Rate" value={`${analyticsStats.successRate}%`} icon={TrendingUp} subtext="completed calls" subtextColor="text-emerald-500" delay={120} />
-        <StatCard label="Total Spend" value={analyticsStats.totalSpend} icon={DollarSign} subtext="All time" delay={160} />
+        <StatCard label="Total Calls" value={stats?.total_calls || 0} icon={PhoneCall} subtext="last 30 days" delay={0} />
+        <StatCard label="Total Minutes" value={stats?.total_minutes || 0} icon={Clock} subtext="last 30 days" delay={40} />
+        <StatCard label="Avg Duration" value={stats?.avg_duration || "0:00"} icon={Timer} subtext="per call" delay={80} />
+        <StatCard label="Success Rate" value={`${stats?.success_rate || 0}%`} icon={TrendingUp} subtext="completed calls" subtextColor="text-emerald-500" delay={120} />
+        <StatCard label="Total Spend" value={`$${stats?.total_spend || 0}`} icon={DollarSign} subtext="All time" delay={160} />
       </div>
 
       {/* ── Rate Cards ────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <StatCard label="Booking Rate" value={`${analyticsStats.bookingRate}%`} icon={CalendarCheck} subtext="Of completed calls" subtextColor="text-emerald-500" delay={200} />
-        <StatCard label="Pickup Rate" value={`${analyticsStats.pickupRate}%`} icon={PhoneIncoming} subtext="Of all calls" subtextColor="text-emerald-500" delay={240} />
-        <StatCard label="Transfer Rate" value={`${analyticsStats.transferRate}%`} icon={ArrowRightLeft} subtext="Of completed calls" delay={280} />
+        <StatCard label="Booking Rate" value={`${stats?.booking_rate || 0}%`} icon={CalendarCheck} subtext="Of completed calls" subtextColor="text-emerald-500" delay={200} />
+        <StatCard label="Pickup Rate" value={`${stats?.pickup_rate || 0}%`} icon={PhoneIncoming} subtext="Of all calls" subtextColor="text-emerald-500" delay={240} />
+        <StatCard label="Transfer Rate" value={`${stats?.transfer_rate || 0}%`} icon={ArrowRightLeft} subtext="Of completed calls" delay={280} />
       </div>
 
       {/* ── Charts Row ────────────────────────────────── */}
@@ -65,15 +92,11 @@ export default function AnalyticsPage() {
           <p className="text-[11px] text-zinc-500 mb-8 font-mono tracking-tight text-zinc-500 uppercase">SYSTEM DATA ANALYTICS // NODE_STATUS: ACTIVE</p>
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={analyticsData}>
+              <AreaChart data={dailyData}>
                 <defs>
                   <linearGradient id="callsGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#00ff9c" stopOpacity={0.15} />
                     <stop offset="100%" stopColor="#00ff9c" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="bookingsGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#888888" stopOpacity={0.1} />
-                    <stop offset="100%" stopColor="#888888" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.04)" />
@@ -107,7 +130,7 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={sentimentData}
+                    data={sentiment}
                     cx="50%"
                     cy="50%"
                     innerRadius={55}
@@ -116,7 +139,7 @@ export default function AnalyticsPage() {
                     dataKey="value"
                     strokeWidth={0}
                   >
-                    {sentimentData.map((entry, i) => (
+                    {sentiment.map((entry: any, i: number) => (
                       <Cell key={i} fill={entry.color} />
                     ))}
                   </Pie>
@@ -135,7 +158,7 @@ export default function AnalyticsPage() {
             </div>
           </div>
           <div className="flex justify-center gap-5 mt-2">
-            {sentimentData.map((s) => (
+            {sentiment.map((s: any) => (
               <div key={s.name} className="flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full" style={{ background: s.color }} />
                 <span className="text-[11px] text-zinc-500">{s.name}</span>

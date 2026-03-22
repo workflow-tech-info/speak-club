@@ -5,6 +5,8 @@ import { Bot, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
+import { insforge } from "@/lib/insforge";
+
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,15 +21,15 @@ function LoginForm() {
     setError("");
     setLoading(true);
 
-    // Simulate slight delay
-    await new Promise((r) => setTimeout(r, 800));
+    const { data, error: authError } = await insforge.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    if (email === "admin@speak-club.io" && password === "Speakclub360@") {
-      // Set auth cookie (expires in 7 days)
-      document.cookie = `sc_auth=1; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+    if (data) {
       window.location.href = redirect;
     } else {
-      setError("Invalid email or password");
+      setError(authError?.message || "Invalid email or password");
       setLoading(false);
     }
   };

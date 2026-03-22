@@ -1,13 +1,25 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { PageHeader, GlassCard } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
-import { agents } from "@/lib/mock-data";
-import { Bot, PhoneCall, Mic, Plus } from "lucide-react";
+import { db } from "@/lib/insforge";
+import { Bot, PhoneCall, Mic, Plus, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function AgentsPage() {
+  const [agents, setAgents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAgents() {
+      const { data } = await db.agents.getAll();
+      if (data) setAgents(data);
+      setLoading(false);
+    }
+    fetchAgents();
+  }, []);
   return (
     <>
       <PageHeader
@@ -57,7 +69,7 @@ export default function AgentsPage() {
                     <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest font-mono">CALLS</span>
                   </div>
                   <p className="text-[15px] font-bold text-[#00ff9c] tabular-nums font-mono leading-none">
-                    {agent.totalCalls.toLocaleString()}
+                    {agent.total_calls?.toLocaleString() || 0}
                   </p>
                 </div>
                 <div className="rounded-xl bg-white/[0.03] border border-white/5 px-3 py-2.5 group-hover:border-[#00ff9c]/20 transition-all">
@@ -66,7 +78,7 @@ export default function AgentsPage() {
                     <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest font-mono">VOICE</span>
                   </div>
                   <p className="text-[12px] font-bold text-zinc-300 truncate font-mono uppercase tracking-tighter leading-none">
-                    {agent.voiceModel.replace('11labs-', '')}
+                    {agent.voice_model?.replace('11labs-', '') || "DEFAULT"}
                   </p>
                 </div>
               </div>
@@ -74,7 +86,7 @@ export default function AgentsPage() {
               {/* Footer */}
               <div className="pt-4 border-t border-[#00ff9c]/5">
                 <p className="text-[11px] text-zinc-600 font-mono uppercase tracking-widest">
-                  <span className="text-zinc-400 font-bold">{agent.clientName.toUpperCase()}</span> · {agent.language.toUpperCase()}
+                  <span className="text-zinc-400 font-bold">{agent.client?.name?.toUpperCase() || "UNASSIGNED"}</span> · {agent.language?.toUpperCase() || "EN"}
                 </p>
               </div>
             </Link>

@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "voice-server": "node voice-server/server.js",
     "voice-api": "node voice-server/api-server.js",
     "voice-ws": "node voice-server/ws-server.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@insforge/sdk": "^1.2.0",
     "antigravity": "^0.0.0",
     "clsx": "^2.1.1",
     "cors": "^2.8.6",

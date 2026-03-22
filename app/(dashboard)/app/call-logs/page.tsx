@@ -1,30 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import { PageHeader } from "@/components/ui/page-header";
-import { GlassCard } from "@/components/ui/page-header";
+import { useEffect, useState } from "react";
+import { PageHeader, GlassCard } from "@/components/ui/page-header";
 import { StatusPill } from "@/components/ui/status-pill";
 import { CallDrawer } from "@/components/ui/call-drawer";
-import { callLogs } from "@/lib/mock-data";
-import type { CallLog } from "@/lib/mock-data";
-import { Phone, Globe, Search, Download } from "lucide-react";
+import { db } from "@/lib/insforge";
+import { Phone, Globe, Search, Download, Loader2 } from "lucide-react";
 
 export default function CallLogsPage() {
-  const [selectedCall, setSelectedCall] = useState<CallLog | null>(null);
+  const [callLogs, setCallLogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCall, setSelectedCall] = useState<any | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [agentFilter, setAgentFilter] = useState("All Agents");
   const [statusFilter, setStatusFilter] = useState("All Statuses");
 
+  useEffect(() => {
+    async function fetchLogs() {
+      const { data } = await db.callLogs.getAll(50);
+      if (data) setCallLogs(data);
+      setLoading(false);
+    }
+    fetchLogs();
+  }, []);
+
   // Get unique agents for the filter
-  const uniqueAgents = Array.from(new Set(callLogs.map(c => c.agentName))).sort();
+  const uniqueAgents = Array.from(new Set(callLogs.map(c => c.agent?.name || "Unknown Agent"))).sort();
 
   const filteredLogs = callLogs.filter((call) => {
+    const agentName = call.agent?.name || "Unknown Agent";
+    const clientName = call.client?.name || "Unknown Client";
     const matchesSearch = 
-      call.agentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      call.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      agentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       call.id.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesAgent = agentFilter === "All Agents" || call.agentName === agentFilter;
+    const matchesAgent = agentFilter === "All Agents" || agentName === agentFilter;
     const matchesStatus = statusFilter === "All Statuses" || call.status === statusFilter.toLowerCase();
 
     return matchesSearch && matchesAgent && matchesStatus;
@@ -107,8 +118,8 @@ export default function CallLogsPage() {
                     className="border-b border-white/5 last:border-0 hover:bg-[#00ff9c]/[0.02] transition-colors duration-150 cursor-pointer group"
                   >
                     <td className="px-6 py-4">
-                      <p className="text-[13px] font-bold text-white tracking-tight">{call.agentName}</p>
-                      <p className="text-[11px] text-zinc-500 mt-1 font-mono uppercase tracking-tight">{call.clientName}</p>
+                      <p className="text-[13px] font-bold text-white tracking-tight">{call.agent?.name || "Unknown Agent"}</p>
+                      <p className="text-[11px] text-zinc-500 mt-1 font-mono uppercase tracking-tight">{call.client?.name || "Unknown Client"}</p>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="inline-flex items-center gap-1.5">

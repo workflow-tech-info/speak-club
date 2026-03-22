@@ -20,6 +20,7 @@ import {
   Code2,
   LogOut,
   Zap,
+  Activity,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -36,6 +37,7 @@ const navSections = [
     items: [
       { name: "Outbound Calls", href: "/app/outbound", icon: Send },
       { name: "Call Logs", href: "/app/call-logs", icon: PhoneCall },
+      { name: "Voice Monitor", href: "/app/voice-monitor", icon: Activity },
       { name: "QA Review", href: "/app/qa-review", icon: ClipboardCheck },
     ],
   },
